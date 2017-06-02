@@ -8,11 +8,11 @@ class DownList extends Model
 {
     public function winFile()
     {
-        return $this->belongsTo('DownFile', 'id', 'win_id');
+        return $this->belongsTo('DownFile', 'win_id', 'id');
     }
 
     public function macFile()
     {
-        return $this->belongsTo('DownFile', 'id', 'mac_id');
+        return $this->belongsTo('DownFile', 'mac_id', 'id');
     }
 }
