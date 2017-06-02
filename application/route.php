@@ -13,6 +13,7 @@
 use think\Route;
 
 Route::group('admin', function () {
+    Route::get('/', 'admin/Index/index');
     Route::get('refreshFiles', 'admin/Index/refreshFiles');
     Route::get('getFiles', 'admin/Index/getFiles');
     Route::put('updateFile/:id', 'admin/Index/updateFile');
@@ -20,5 +21,4 @@ Route::group('admin', function () {
     Route::put('updateItem/:id', 'admin/Index/updateItem');
     Route::get('getList', 'admin/Index/getList');
     Route::put('sortList', 'admin/Index/sortList');
-    Route::get('/', 'admin/Index/index');
 });
