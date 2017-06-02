@@ -1,12 +1,57 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2016 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: 流年 <liu21st@gmail.com>
-// +----------------------------------------------------------------------
 
-// 应用公共文件
+/**
+ * 遍历指定目录及子目录的文件
+ *
+ * @param $path string 开始遍历的目录
+ * @param $root string 服务器根目录
+ *
+ * @return array 包含所有文件（不含文件夹）的文件名、路径、绝对路径、相对根目录的路径、文件大小的数组
+ */
+function &scan_file($path, $root)
+{
+    // 遍历指定目录并除去.和..
+    $files = array_diff(scandir($path), array('..', '.'));
+    $ret_arr = [];
+    foreach ($files as &$file) {
+        $file_path = $path . '/' . $file;
+        if (is_dir($file_path)) {
+            $ret_arr = array_merge($ret_arr, scan_file($file_path, $root));
+        } else {
+            // 获取绝对路径
+            $abs_path = realpath($file_path);
+            // 判断是否以指定根目录开始
+            if (strpos($abs_path, $root) === 0) {
+                $ret_arr[] = [
+                    'name' => $file,
+                    'path' => $file_path,
+                    // 'abs_path' => $abs_path,
+                    'rel_path' => substr($abs_path, strlen($root) + 1), // 除去首部的根目录，转换为相对路径
+                    'size' => filesize($abs_path),
+                ];
+            }
+        }
+    }
+    return $ret_arr;
+}
+
+/**
+ * 方便人类阅读的文件大小表示法
+ *
+ * @param $bytes int 字节数
+ *
+ * @return string
+ */
+function readable_size($bytes)
+{
+    if ($bytes < 1024) {
+        return $bytes . 'B';
+    }
+    if ($bytes < 1048576) {
+        return round($bytes / 1024, 1) . 'K';
+    }
+    if ($bytes < 1073741824) {
+        return round($bytes / 1048576, 1) . 'M';
+    }
+    return round($bytes / 1073741824, 1) . 'G';
+}
