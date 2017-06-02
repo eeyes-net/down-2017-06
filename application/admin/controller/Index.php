@@ -48,7 +48,11 @@ class Index extends Controller
      */
     public function getFiles()
     {
-        return json(DownFile::all());
+        $downFiles = DownFile::all();
+        foreach ($downFiles as &$downFile) {
+            $downFile['enabled'] = ($downFile['enabled'] == true);
+        }
+        return json($downFiles);
     }
 
     /**
@@ -65,7 +69,6 @@ class Index extends Controller
             return json(false);
         }
         $downFile->version = request()->put('version');
-        $downFile->enabled = (request()->put('enabled') == true);
         $downFile->save();
         return json(true);
     }
@@ -77,7 +80,11 @@ class Index extends Controller
      */
     public function getList()
     {
-        return json(DownList::order(['rank', 'id'])->select());
+        $downList = DownList::order(['rank', 'id'])->select();
+        foreach ($downList as &$item) {
+            $item['enabled'] = ($item['enabled'] == true);
+        }
+        return json($downList);
     }
 
     /**
@@ -113,7 +120,7 @@ class Index extends Controller
         $downList->win_id = request()->put('win_id');
         $downList->mac_id = request()->put('mac_id');
         $downList->description = request()->put('description');
-        $downList->enabled = request()->put('enabled');
+        $downList->enabled = (request()->put('enabled') == true);
         $downList->save();
         return json(true);
     }
