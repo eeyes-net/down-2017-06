@@ -1,0 +1,28 @@
+{
+    "name": "eeyes-net/down-2017-06",
+    "description": "eeyes file download website",
+    "type": "project",
+    "keywords": [
+        "eeyes",
+        "download"
+    ],
+    "homepage": "http://down.eeyes.net/",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Ganlv",
+            "email": "ganlvtech@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "topthink/framework": "^5.0",
+        "topthink/think-migration": "^1.1"
+    },
+    "extra": {
+        "think-path": "thinkphp"
+    },
+    "config": {
+        "preferred-install": "dist"
+    }
+}
