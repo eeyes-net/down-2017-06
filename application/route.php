@@ -9,13 +9,16 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-return [
-    '__pattern__' => [
-        'name' => '\w+',
-    ],
-    '[hello]'     => [
-        ':id'   => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
-        ':name' => ['index/hello', ['method' => 'post']],
-    ],
 
-];
+use think\Route;
+
+Route::group('admin', function () {
+    Route::get('refreshFiles', 'admin/Index/refreshFiles');
+    Route::get('getFiles', 'admin/Index/getFiles');
+    Route::put('updateFile/:id', 'admin/Index/updateFile');
+    Route::post('createItem', 'admin/Index/createItem');
+    Route::put('updateItem/:id', 'admin/Index/updateItem');
+    Route::get('getList', 'admin/Index/getList');
+    Route::put('sortList', 'admin/Index/sortList');
+    Route::get('/', 'admin/Index/index');
+});
