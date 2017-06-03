@@ -29,12 +29,12 @@ class DownFile extends Migrator
     public function change()
     {
         $this->table('down_file', ['engine' => 'MyISAM'])
-            ->addColumn('name_md5', 'char', ['limit' => 32, 'comment' => '文件名称MD5'])
+            ->addColumn('name', 'string', ['limit' => 190, 'comment' => '文件名称'])
             ->addColumn('path', 'string', ['limit' => 2048, 'comment' => '文件相对路径'])
             ->addColumn('size', 'integer', ['limit' => MysqlAdapter::INT_BIG, 'comment' => '文件大小'])
             ->addColumn('version', 'string', ['limit' => 255, 'default' => '', 'comment' => '文件版本'])
             ->addColumn('enabled', 'integer', ['limit' => MysqlAdapter::INT_TINY, 'default' => '1', 'comment' => '是否上架'])
-            ->addIndex(['name_md5'], ['unique' => true, 'name' => 'name_md5_unique'])
+            ->addIndex(['name'], ['unique' => true, 'name' => 'name_unique'])
             ->create();
     }
 }

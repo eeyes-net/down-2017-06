@@ -26,11 +26,10 @@ class Index extends Controller
         // 扫描所有文件
         $files = scan_file(config('filesystem.down'), config('filesystem.root'));
         foreach ($files as &$file) {
-            $name_md5 = md5($file['name']);
-            $downFile = DownFile::getByNameMd5($name_md5);
+            $downFile = DownFile::getByName($file['name']);
             if (!$downFile) {
                 $downFile = new DownFile([
-                    'name_md5' => $name_md5,
+                    'name' => $file['name'],
                 ]);
             }
             $downFile->path = $file['rel_path'];
