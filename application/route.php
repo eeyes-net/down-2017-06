@@ -12,6 +12,8 @@
 
 use think\Route;
 
+Route::get('/', 'index/Index/index');
+
 Route::group('admin', function () {
     Route::get('/', 'admin/Index/index');
     Route::get('refreshFiles', 'admin/Index/refreshFiles');
