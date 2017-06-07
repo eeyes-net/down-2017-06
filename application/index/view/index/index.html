@@ -231,6 +231,7 @@
     <div class="content">
         <ul class="inner f-cl" id="inner">
             {foreach ($downList as $item)}
+            {if ($item->hasWinFile() || $item->hasMacFile())}
             <li class="shadow">
                 <div class="cn-body">
                     <div class="name">
@@ -239,17 +240,18 @@
                     <p>{$item->description|htmlentities}</p>
                 </div>
                 <div class="cn-footer f-cl">
-                    <p>{if !empty($item->winFile)} Win: {$item->winFile->version|htmlentities}{/if}{if !empty($item->macFile)} Mac: {$item->macFile->version|htmlentities}{/if}</p>
-                    {if !empty($item->winFile)}
-                    <a href="http://down.eeyes.net/{$item->winFile->path|htmlentities}" title="{$item->winFile->size|readable_size|htmlentities}"><img src="/static/index/images/win.png" />
+                    <p>{if ($item->hasWinFile())} Win: {$item->winFile->version|htmlentities}{/if}{if ($item->hasMacFile())} Mac: {$item->macFile->version|htmlentities}{/if}</p>
+                    {if ($item->hasWinFile())}
+                    <a href="/{$item->winFile->path|htmlentities}" title="{$item->winFile->size|readable_size|htmlentities}"><img src="/static/index/images/win.png" />
                         <p style="margin:8px 4px 0 8px;float:right;">WIN版本</p></a>
                     {/if}
-                    {if !empty($item->macFile)}
-                    <a href="http://down.eeyes.net/{$item->macFile->path|htmlentities}" title="{$item->macFile->size|readable_size|htmlentities}"><img src="/static/index/images/mac.png" />
+                    {if ($item->hasMacFile())}
+                    <a href="/{$item->macFile->path|htmlentities}" title="{$item->macFile->size|readable_size|htmlentities}"><img src="/static/index/images/mac.png" />
                         <p style="margin:8px 4px 0 8px;float:right;">MAC版本</p></a>
                     {/if}
                 </div>
             </li>
+            {/if}
             {/foreach}
         </ul>
     </div>

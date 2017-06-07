@@ -15,4 +15,14 @@ class DownList extends Model
     {
         return $this->belongsTo('DownFile', 'mac_id', 'id');
     }
+
+    public function hasWinFile()
+    {
+        return (!empty($this->winFile) && $this->winFile->enabled);
+    }
+
+    public function hasMacFile()
+    {
+        return (!empty($this->macFile) && $this->macFile->enabled);
+    }
 }
