@@ -1,8 +1,11 @@
 var data = {
+    isLogin: false,
+    password: '',
     tabsActive: {
         downFiles: true,
         downList: false,
-        downListSort: false
+        downListSort: false,
+        logout: false
     },
     notification: '',
     downList: [],
@@ -12,10 +15,74 @@ var data = {
 var vm = new Vue({
     el: '#root',
     data: data,
+    watch: {
+        isLogin: function (val) {
+            if (val) {
+                this.refreshData();
+            }
+        }
+    },
+    mounted: function () {
+        this.getIsLogin();
+    },
     methods: {
+        getIsLogin: function () {
+            axios({
+                method: 'get',
+                url: '/admin/auth'
+            })
+            .then(function (response) {
+                if (response.data) {
+                    data.isLogin = (true === response.data);
+                }
+            });
+        },
+        login: function () {
+            axios({
+                method: 'post',
+                url: '/admin/auth/login',
+                data: {
+                    password: data.password
+                }
+            })
+            .then(function (response) {
+                if (response.data) {
+                    data.isLogin = true;
+                }
+            });
+        },
+        logout: function () {
+            axios({
+                method: 'post',
+                url: '/admin/auth/logout'
+            })
+            .then(function (response) {
+                if (response.data) {
+                    data.isLogin = false;
+                }
+            });
+        },
+        refreshData: function () {
+            axios({
+                method: 'get',
+                url: '/admin/files',
+                responseType: 'json'
+            })
+            .then(function (response) {
+                data.downFiles = response.data;
+            });
+            axios({
+                method: 'get',
+                url: '/admin/list',
+                responseType: 'json'
+            })
+            .then(function (response) {
+                data.downList = response.data;
+            });
+        },
         enabledFiles: function () {
             var result = [];
-            for (var i =0; i < data.downFiles.length; ++i) {
+            for (var i = 0; i < data.downFiles.length; ++i) {
                 if (data.downFiles[i].enabled) {
                     result.push(data.downFiles[i]);
                 }
@@ -50,7 +117,6 @@ var vm = new Vue({
                 }
             })
             .then(function (response) {
-                console.log(response);
                 data.downList.push(response.data);
             });
         },
@@ -58,7 +124,14 @@ var vm = new Vue({
             axios({
                 method: 'put',
                 url: '/admin/item/' + item.id,
-                data: item
+                data: {
+                    name: item.name,
+                    icon_path: item.icon_path,
+                    win_id: item.win_id,
+                    mac_id: item.mac_id,
+                    description: item.description,
+                    enabled: item.enabled
+                }
             });
         },
         deleteItem: function (item) {
@@ -101,28 +174,6 @@ var vm = new Vue({
                 return Math.round(10 * bytes / 1048576) / 10 + 'M';
             }
             return Math.round(10 * bytes / 1073741824) / 10 + 'G';
-        },
-        downFileStatus: function (enabled) {
-            return enabled ? '正常' : '已删除';
         }
     }
-});
-
-axios({
-    method: 'get',
-    url: '/admin/files',
-    responseType: 'json'
-})
-.then(function (response) {
-    console.log(response);
-    data.downFiles = response.data;
-});
-axios({
-    method: 'get',
-    url: '/admin/list',
-    responseType: 'json'
-})
-.then(function (response) {
-    console.log(response);
-    data.downList = response.data;
 });

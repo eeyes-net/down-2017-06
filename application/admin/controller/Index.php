@@ -5,9 +5,59 @@ namespace app\Admin\controller;
 use app\common\model\DownFile;
 use app\common\model\DownList;
 use think\Controller;
+use think\exception\HttpResponseException;
+use think\Response;
+use think\Session;
 
 class Index extends Controller
 {
+    protected $beforeActionList = [
+        'mustLogin' => ['except' => ['index', 'login', 'logout']],
+    ];
+
+    public function mustLogin()
+    {
+        if (!Session::get('is_login')) {
+            $response = Response::create(['err_msg' => '请先登录'], 'json', 403);
+            throw new HttpResponseException($response);
+        }
+    }
+
+    /**
+     * 返回是否登录
+     *
+     * @return \think\response\Json
+     */
+    public function isLogin()
+    {
+        return json(true == Session::get('is_login'));
+    }
+
+    /**
+     * 登录
+     *
+     * @return \think\response\Json
+     */
+    public function login()
+    {
+        if (request()->post('password') === config('password.admin')) {
+            Session::set('is_login', true);
+            return json(true);
+        }
+        return json(false);
+    }
+
+    /**
+     * 退出登录
+     *
+     * @return \think\response\Json
+     */
+    public function logout()
+    {
+        Session::delete('is_login');
+        return json(true);
+    }
+
     /**
      * 重新遍历下载目录
      *
