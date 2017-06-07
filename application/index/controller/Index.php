@@ -16,11 +16,20 @@ class Index
     public function saveIssue()
     {
         $issue = new Issue();
-        $issue->name = request()->post('name');
         $issue->title = request()->post('title');
+        if (!$issue->title) {
+            return json([
+                'code' => 400,
+                'msg' => '反馈概述不能为空',
+            ]);
+        }
         $issue->content = request()->post('content');
+        $issue->name = request()->post('name');
         $issue->contact = request()->post('contact');
         $issue->save();
-        return json(true);
+        return json([
+            'code' => 200,
+            'msg' => '提交反馈成功',
+        ]);
     }
 }

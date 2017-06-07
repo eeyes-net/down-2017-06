@@ -1,0 +1,212 @@
+.eeyes-common-footer * {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: "微软雅黑", "黑体", sans-serif;
+}
+
+.eeyes-common-footer {
+    width: 100%;
+    background-color: #e6e6e6;
+}
+
+.eeyes-common-footer-banner {
+    padding: 48px 0;
+    background-color: #f2f2f2;
+    text-align: center;
+}
+
+.eeyes-common-footer-banner h1 {
+    color: #333;
+    font-size: 30px;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+@media screen and (max-width: 414px) {
+    .eeyes-common-footer-banner h1 {
+        font-size: 22px;
+    }
+}
+
+.eeyes-common-footer-banner p {
+    color: #666;
+    padding-top: 28px;
+}
+
+.eeyes-common-footer-banner-logo {
+    margin-right: .2em;
+    height: 1em;
+    vertical-align: middle;
+}
+
+.eeyes-common-footer-banner-text {
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.eeyes-common-footer-logo-container {
+    margin: 42px auto;
+}
+
+.eeyes-common-footer-logo {
+    width: 120px;
+    max-width: 80%;
+}
+
+.eeyes-common-footer-body {
+    margin: 42px auto;
+    padding-left: 32px;
+    max-width: 972px;
+}
+
+.eeyes-common-footer-main {
+    font-size: 0;
+}
+
+.eeyes-common-footer-main-block {
+    margin: 0 38px 30px 0;
+    padding: 0 6px;
+    min-width: 100px;
+    display: inline-block;
+    font-size: 12px;
+    vertical-align: top;
+}
+
+.eeyes-common-footer-main-block:last-child {
+    margin-right: 0;
+}
+
+.eeyes-common-footer-main-block-title {
+    color: #262626;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.eeyes-common-footer-main-block-bar {
+    width: 14px;
+    height: 2px;
+    margin: 12px 0 21px 0;
+    background-color: #262626;
+}
+
+.eeyes-common-footer-main-block li {
+    line-height: 24px;
+}
+
+.eeyes-common-footer-main-block li a {
+    color: #595959;
+    font-size: 14px;
+}
+
+.eeyes-common-footer-main-block li a:hover {
+    text-decoration: underline;
+}
+
+.eeyes-common-footer-main-block-qrcode-list {
+    margin-bottom: -20px;
+    font-size: 0;
+}
+
+.eeyes-common-footer-main-block-qrcode-list li {
+    display: inline-block;
+    margin: 0 40px 20px 0;
+    font-size: 12px;
+}
+
+.eeyes-common-footer-main-block-qrcode-list li:last-child {
+    margin-right: 0;
+}
+
+.eeyes-common-footer-main-block-qrcode-list li h5 {
+    color: #595959;
+    font-size: 16px;
+}
+
+.eeyes-common-footer-main-block-qrcode-list li p {
+    color: #808080;
+    font-size: 12px;
+}
+
+.eeyes-common-footer-main-block-qrcode-list li img {
+    width: 100px;
+    height: 100px;
+}
+
+.eeyes-common-footer-main-block-icon-list li {
+    margin-bottom: 16px;
+    font-size: 0;
+}
+
+.eeyes-common-footer-main-block-icon-list-icon-container {
+    display: inline-block;
+    width: 50px;
+    height: 38px;
+    vertical-align: middle;
+}
+
+.eeyes-common-footer-main-block-icon-list-icon-container img {
+    height: 100%;
+    max-width: 100%;
+}
+
+.eeyes-common-footer-main-block-icon-list-text-container {
+    display: inline-block;
+    margin-left: 6px;
+    color: #595959;
+    font-size: 12px;
+    line-height: 16px;
+    vertical-align: middle;
+}
+
+.eeyes-common-footer-copyright {
+    padding: 32px 18px;
+    background-color: #e0e0e0;
+    text-align: center;
+}
+
+.eeyes-common-footer-about {
+    margin: 0 auto 24px;
+    width: 307px;
+    max-width: 100%;
+}
+
+.eeyes-common-footer-about table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    background-color: transparent;
+}
+
+.eeyes-common-footer-about table tr td + td {
+    border-left: 2px solid #000;
+}
+
+.eeyes-common-footer-about table tr td {
+    text-align: center;
+}
+
+.eeyes-common-footer-about table tr td a {
+    color: #1a1a1a;
+    font-size: 14px;
+}
+
+.eeyes-common-footer-about table tr td a:hover {
+    text-decoration: underline;
+}
+
+.eeyes-common-footer-copyright-content p {
+    color: #4c4c4c;
+    font-size: 12px;
+    line-height: 2;
+}
+
+.eeyes-common-footer-copyright-content p a {
+    color: #4c4c4c;
+    text-decoration: underline;
+}
+
+.eeyes-common-footer-copyright-content p span {
+    display: inline-block;
+}

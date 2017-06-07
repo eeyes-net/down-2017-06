@@ -1,0 +1,285 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+html, body {
+    background-color: #e8ecef;
+    font-size: 14px;
+    font-family: "PingFang SC", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", sans-serif;
+}
+
+/* header begin */
+
+.header {
+    background-color: #1f3c5a;
+    padding: 0 12px;
+    height: 64px;
+}
+
+.header-body {
+    position: relative;
+    margin: 0 auto;
+    top: 0;
+    max-width: 1280px;
+}
+
+.header-logo {
+    position: absolute;
+    line-height: 64px;
+}
+
+.header-group-left {
+    left: 0;
+}
+
+.header-group-middle {
+    left: 117px;
+}
+
+.header-group-right {
+    right: 0;
+}
+
+.header-logo-img {
+    vertical-align: middle;
+}
+
+.header-logo-down {
+    width: 107px;
+    height: 35px;
+}
+
+.header-logo-eeyes {
+    width: 134px;
+    height: 24px;
+}
+
+.header-logo-title {
+    color: #e5e9ec;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+/* header end */
+
+/* notice begin */
+
+.notice {
+    padding: 0 12px;
+    height: 80px;
+    background-color: #fafafa;
+    box-shadow: 0 1px 2px #c8cacc;
+}
+
+.notice-body {
+    margin: 0 auto;
+    max-width: 1280px;
+}
+
+.notice-icon, .notice-text-container {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 80px;
+}
+
+.notice-text-container {
+    width: 0;
+    overflow: visible;
+}
+
+.notice-text-container p {
+    width: 9999px;
+}
+
+.notice-icon {
+    margin-right: 8px;
+}
+
+.notice-icon-img {
+    width: 36px;
+    height: 36px;
+    vertical-align: middle;
+}
+
+/* notice end */
+
+/* main begin */
+
+.main {
+    /*padding: 0 12px;*/
+}
+
+.main-body {
+    margin: 0 auto;
+    max-width: 1280px;
+}
+
+.main-list-ul {
+    font-size: 0;
+}
+
+.main-list-li {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 0 12px;
+    width: 50%;
+    font-size: 1rem;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+@media screen and (min-width: 1280px) {
+    .main-list-ul {
+        margin: 0 -12px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .main-list-li {
+        width: 100%;
+    }
+}
+
+/* main card begin */
+
+.main-card {
+    padding: 28px 32px;
+    background: #fafafa;
+    box-shadow: 0 1px 2px #c8cacc;
+}
+
+.main-card-header {
+    position: relative;
+    height: 64px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #dcdfe0;
+    box-sizing: content-box;
+}
+
+.main-card-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.main-card-icon-img {
+    width: 64px;
+    height: 64px;
+}
+
+.main-card-title {
+    position: absolute;
+    left: 64px;
+    top: 0;
+    right: 0;
+    margin-left: .6em;
+    height: 64px;
+    color: #38414b;
+    font-size: 1.7em;
+    font-weight: bold;
+    line-height: 64px;
+    overflow: hidden;
+}
+
+.main-card-title:hover {
+    height: initial;
+    background-color: #fafafa;
+    overflow: initial;
+}
+
+.main-card-content {
+    margin-top: 24px;
+    height: 7em;
+}
+
+.main-card-content-text {
+    color: #525e66;
+    height: 100%;
+    line-height: 1.7;
+    overflow: hidden;
+}
+
+.main-card-content-text:hover {
+    position: relative;
+    height: initial;
+    background-color: #fafafa;
+    overflow: initial;
+}
+
+.main-card-footer {
+    position: relative;
+    margin-top: 36px;
+}
+
+.main-card-footer-version {
+    line-height: 1.7;
+    height: 1.7em;
+}
+
+.main-card-footer-button-group {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: -8px 0;
+}
+
+.main-card-footer-button {
+    display: inline-block;
+    margin-left: .7em;
+    padding: 0 .8em;
+    height: 40px;
+    color: #000;
+    background-color: #f2f5f7;
+    text-align: center;
+    text-decoration: none;
+    line-height: 38px;
+    border: 1px solid #dcdfe0;
+    vertical-align: middle;
+    transition: .2s ease-in all;
+}
+
+.main-card-footer-button-icon, .main-card-footer-button-text {
+    vertical-align: middle;
+}
+
+.main-card-footer-button-icon.win {
+    width: 21px;
+    height: 21px;
+}
+
+.main-card-footer-button-icon.mac {
+    margin-top: -8px;
+    width: 24px;
+    height: 29px;
+}
+
+.main-card-footer-button-text {
+    font-size: .8em;
+    font-weight: lighter;
+}
+
+/* main card end */
+
+/* main end */
+
+/* footer begin */
+
+.my-footer {
+    margin: 72px 0;
+    padding: 0 12px;
+}
+
+.my-footer-box {
+    margin: 0 auto;
+    width: 394px;
+    max-width: 100%;
+    padding: 1.8em 0;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 1px 2px #c8cacc;
+}
+
+/* footer end */
