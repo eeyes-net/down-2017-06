@@ -1,0 +1,48 @@
+.header {
+    background-color: #1f3c5a;
+    padding: 0 16px;
+    height: 64px;
+}
+
+.header-body {
+    position: relative;
+    margin: 0 auto;
+    top: 0;
+}
+
+.header-logo {
+    position: absolute;
+    line-height: 64px;
+}
+
+.header-group-left {
+    left: 0;
+}
+
+.header-group-middle {
+    left: 117px;
+}
+
+.header-group-right {
+    right: 0;
+}
+
+.header-logo-img {
+    vertical-align: middle;
+}
+
+.header-logo-down {
+    width: 107px;
+    height: 35px;
+}
+
+.header-logo-eeyes {
+    width: 134px;
+    height: 24px;
+}
+
+.header-logo-title {
+    color: #e5e9ec;
+    font-size: 24px;
+    font-weight: normal;
+}

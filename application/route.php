@@ -16,11 +16,12 @@ Route::get('/', 'index/Index/index');
 
 Route::group('admin', function () {
     Route::get('/', 'admin/Index/index');
-    Route::get('refreshFiles', 'admin/Index/refreshFiles');
-    Route::get('getFiles', 'admin/Index/getFiles');
-    Route::put('updateFile/:id', 'admin/Index/updateFile');
-    Route::post('createItem', 'admin/Index/createItem');
-    Route::put('updateItem/:id', 'admin/Index/updateItem');
-    Route::get('getList', 'admin/Index/getList');
-    Route::put('sortList', 'admin/Index/sortList');
+    Route::get('files/refresh', 'admin/Index/refreshFiles');
+    Route::get('files', 'admin/Index/getFiles');
+    Route::put('file/:id', 'admin/Index/updateFile');
+    Route::get('list', 'admin/Index/getList');
+    Route::put('list', 'admin/Index/updateList');
+    Route::post('item', 'admin/Index/createItem');
+    Route::put('item/:id', 'admin/Index/updateItem');
+    Route::delete('item/:id', 'admin/Index/deleteItem');
 });

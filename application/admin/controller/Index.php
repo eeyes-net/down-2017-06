@@ -87,6 +87,24 @@ class Index extends Controller
     }
 
     /**
+     * 排序列表
+     *
+     * @return \think\response\Json
+     */
+    public function updateList()
+    {
+        $list = request()->put('list/a');
+        $rank = 1;
+        foreach ($list as $item_id) {
+            $downList = DownList::get((int)$item_id);
+            $downList->rank = $rank;
+            $downList->save();
+            ++$rank;
+        }
+        return json(true);
+    }
+
+    /**
      * 创建列表项
      *
      * @return \think\response\Json
@@ -101,7 +119,8 @@ class Index extends Controller
         $downList->description = request()->post('description');
         $downList->enabled = request()->post('enabled');
         $downList->save();
-        return json(true);
+        return json(DownList::get($downList->id));
+        // return json($downList);
     }
 
     /**
@@ -125,18 +144,15 @@ class Index extends Controller
     }
 
     /**
-     * 排序列表
+     * 删除列表项
+     *
+     * @param int $id
      *
      * @return \think\response\Json
      */
-    public function sortList()
+    public function deleteItem($id)
     {
-        $list = request()->put('list/a');
-        foreach ($list as $key => $item_id) {
-            $downList = DownList::get($item_id);
-            $downList->rank = $key;
-            $downList->save();
-        }
+        DownList::destroy($id);
         return json(true);
     }
 
