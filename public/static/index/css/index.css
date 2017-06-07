@@ -74,6 +74,7 @@ html, body {
 }
 
 .notice-body {
+    position: relative;
     margin: 0 auto;
     max-width: 1280px;
 }
@@ -85,12 +86,12 @@ html, body {
 }
 
 .notice-text-container {
-    width: 0;
-    overflow: visible;
-}
-
-.notice-text-container p {
-    width: 9999px;
+    position: absolute;
+    left: 50px;
+    top: 0;
+    right: 0;
+    height: 80px;
+    overflow: hidden;
 }
 
 .notice-icon {
