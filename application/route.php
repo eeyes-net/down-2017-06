@@ -13,6 +13,7 @@
 use think\Route;
 
 Route::get('/', 'index/Index/index');
+Route::post('issue', 'index/Index/saveIssue');
 
 Route::group('admin', function () {
     Route::get('/', 'admin/Index/index');
