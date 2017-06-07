@@ -207,6 +207,38 @@ class Index extends Controller
     }
 
     /**
+     * 列出所有图标
+     *
+     * @return \think\response\Json
+     */
+    public function getIcons()
+    {
+        // 遍历图标目录
+        $icons = scan_file(config('filesystem.icon'), config('filesystem.root'));
+        $result = [];
+        foreach ($icons as &$icon) {
+            $result[] = $icon['rel_path'];
+        }
+        return json($result);
+    }
+
+    /**
+     * 上传图标
+     *
+     * @return \think\response\Json 相对路径
+     */
+    public function uploadIcon()
+    {
+        $file = request()->file('file');
+        $info = $file->move(config('filesystem.icon'), '', false);
+        if (!$info) {
+            $info = $file->rule('uniqid')->move(config('filesystem.icon'));
+        }
+        $rel_path = substr($info->getRealPath(), strlen(config('filesystem.root')) + 1);
+        return json($rel_path);
+    }
+
+    /**
      * 后台首页
      *
      * @return \think\response\View

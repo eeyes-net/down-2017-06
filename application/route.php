@@ -28,4 +28,6 @@ Route::group('admin', function () {
     Route::post('item', 'admin/Index/createItem');
     Route::put('item/:id', 'admin/Index/updateItem');
     Route::delete('item/:id', 'admin/Index/deleteItem');
+    Route::get('icons', 'admin/Index/getIcons');
+    Route::post('icons', 'admin/Index/uploadIcon');
 });

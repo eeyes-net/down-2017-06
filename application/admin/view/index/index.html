@@ -66,6 +66,22 @@
                         <div class="box">
                             <div class="field is-horizontal">
                                 <div class="field-label is-normal">
+                                    <label class="label">图标</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <div class="control">
+                                            <figure class="image is-64x64" @click="showModalIcons(item)">
+                                                <div class="image is-square">
+                                                    <img :src="'/' + item.icon_path">
+                                                </div>
+                                            </figure>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
                                     <label class="label">名称</label>
                                 </div>
                                 <div class="field-body">
@@ -176,6 +192,38 @@
                     <div class="column is-half is-offset-one-quarter">
                         <a class="button is-fullwidth" @click="logout"><span>退出登录</span></a>
                     </div>
+                </div>
+            </div>
+            <div class="modal" :class="{'is-active': isModalIconsShow}">
+                <div class="modal-background" @click="hideModalIcons"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">从下方列表中选择图标，或者上传图标</p>
+                        <button class="delete" @click="hideModalIcons"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        <article class="media" v-for="icon in icons" @click="changeIcon(icon)">
+                            <figure class="media-left">
+                                <div class="image is-32x32">
+                                    <img :src="'/' + icon">
+                                </div>
+                            </figure>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p v-text="icon"></p>
+                                </div>
+                            </div>
+                        </article>
+                    </section>
+                    <footer class="modal-card-foot">
+                        <figure class="image is-32x32">
+                            <div class="image is-square">
+                                <img :src="iconUploaderPreviewSrc" v-if="iconUploaderPreviewSrc">
+                            </div>
+                        </figure>
+                        <input type="file" accept="image/*" @change="onIconUploaderChange">
+                        <a class="button is-info" @click="uploadIcon">上传新图标</a>
+                    </footer>
                 </div>
             </div>
         </div>

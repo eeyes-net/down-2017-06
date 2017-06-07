@@ -9,7 +9,12 @@ var data = {
     },
     notification: '',
     downList: [],
-    downFiles: []
+    downFiles: [],
+    icons: [],
+    isModalIconsShow: false,
+    currentModalIconsItem: null,
+    fileUploadFile: null,
+    iconUploaderPreviewSrc: ''
 };
 
 var vm = new Vue({
@@ -78,6 +83,14 @@ var vm = new Vue({
             })
             .then(function (response) {
                 data.downList = response.data;
+            });
+            axios({
+                method: 'get',
+                url: '/admin/icons',
+                responseType: 'json'
+            })
+            .then(function (response) {
+                data.icons = response.data;
             });
         },
         enabledFiles: function () {
@@ -159,6 +172,36 @@ var vm = new Vue({
                 data: {
                     list: postData
                 }
+            });
+        },
+        showModalIcons: function (item) {
+            this.isModalIconsShow = true;
+            this.currentModalIconsItem = item;
+        },
+        hideModalIcons: function () {
+            this.isModalIconsShow = false;
+        },
+        changeIcon: function (icon) {
+            this.currentModalIconsItem.icon_path = icon;
+            this.hideModalIcons();
+        },
+        onIconUploaderChange: function (e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.fileUploadFile = files[0];
+            this.iconUploaderPreviewSrc = URL.createObjectURL(this.fileUploadFile);
+        },
+        uploadIcon: function () {
+            var formData = new FormData();
+            formData.append('file', this.fileUploadFile);
+            axios({
+                method: 'post',
+                url: '/admin/icons/',
+                data: formData
+            })
+            .then(function (response) {
+                data.icons.push(response.data);
             });
         }
     },
