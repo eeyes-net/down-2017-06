@@ -5,12 +5,16 @@ var data = {
         downFiles: true,
         downList: false,
         downListSort: false,
+        issue: false,
         logout: false
     },
     notification: '',
     downList: [],
     downFiles: [],
     icons: [],
+    issues: [],
+    issueCurrentPage: 1,
+    issueLastPage: 1,
     isModalIconsShow: false,
     currentModalIconsItem: null,
     fileUploadFile: null,
@@ -92,6 +96,7 @@ var vm = new Vue({
             .then(function (response) {
                 data.icons = response.data;
             });
+            this.getIssues(1);
         },
         enabledFiles: function () {
             var result = [];
@@ -203,6 +208,81 @@ var vm = new Vue({
             .then(function (response) {
                 data.icons.push(response.data);
             });
+        },
+        getIssues: function (page) {
+            axios({
+                method: 'get',
+                url: '/admin/issues',
+                params: {
+                    page: page
+                },
+                responseType: 'json'
+            })
+            .then(function (response) {
+                data.issueCurrentPage = page;
+                data.issueLastPage = response.data.last_page;
+                data.issues = response.data.data;
+            });
+        },
+        /**
+         * 页码列表
+         *
+         * @link https://gist.github.com/kottenator/9d936eb3e4e3c3e02598
+         * @return {Array}
+         */
+        issuePageList: function () {
+            var current = this.issueCurrentPage;
+            var last = this.issueLastPage;
+            var delta = 2;
+            var left = current - delta;
+            var right = current + delta;
+            var range = [];
+            for (var i = 1; i <= last; ++i) {
+                if (i === 1 || i === last || i >= left && i <= right) {
+                    range.push(i);
+                }
+            }
+            var result = [];
+            var lastPage = 0;
+            for (var i = 0; i < range.length; ++i) {
+                var page = range[i];
+                var deltaPage = page - lastPage;
+                if (deltaPage > 2) {
+                    result.push({
+                        paginationEllipsis: true,
+                        page: '\u8230',
+                        isCurrent: false
+                    });
+                } else {
+                    if (deltaPage === 2) {
+                        result.push({
+                            page: page - 1,
+                            paginationEllipsis: false,
+                            isCurrent: false
+                        });
+                    }
+                }
+                result.push({
+                    page: page,
+                    paginationEllipsis: false,
+                    isCurrent: (page === current)
+                });
+                lastPage = page;
+            }
+            return result;
+        },
+        selectIssuePage: function (page) {
+            if (page === '+1') {
+                if (this.issueCurrentPage + 1 <= this.issueLastPage) {
+                    this.getIssues(this.issueCurrentPage + 1)
+                }
+            } else if (page === '-1') {
+                if (this.issueCurrentPage - 1 >= 1) {
+                    this.getIssues(this.issueCurrentPage - 1)
+                }
+            } else {
+                this.getIssues(parseInt(page))
+            }
         }
     },
     filters: {

@@ -30,4 +30,5 @@ Route::group('admin', function () {
     Route::delete('item/:id', 'admin/Index/deleteItem');
     Route::get('icons', 'admin/Index/getIcons');
     Route::post('icons', 'admin/Index/uploadIcon');
+    Route::get('issues', 'admin/Index/getIssues');
 });

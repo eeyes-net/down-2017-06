@@ -16,4 +16,5 @@ use think\Model;
  */
 class Issue extends Model
 {
+    // protected $autoWriteTimestamp = 'datetime';
 }

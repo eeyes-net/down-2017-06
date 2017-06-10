@@ -30,6 +30,7 @@
                     <li :class="{'is-active': tabsActive.downFiles}"><a @click="changeTab('downFiles')">文件版本</a></li>
                     <li :class="{'is-active': tabsActive.downList}"><a @click="changeTab('downList')">软件管理</a></li>
                     <li :class="{'is-active': tabsActive.downListSort}"><a @click="changeTab('downListSort')">软件排序</a></li>
+                    <li :class="{'is-active': tabsActive.issue}"><a @click="changeTab('issue')">意见反馈</a></li>
                     <li :class="{'is-active': tabsActive.logout}"><a @click="changeTab('logout')">退出登录</a></li>
                 </ul>
             </div>
@@ -185,6 +186,37 @@
                 </div>
                 <div class="block has-text-right">
                     <a class="button is-success" @click="updateList"><span class="icon is-small"><i class="fa fa-check"></i></span><span>保存</span></a>
+                </div>
+            </div>
+            <div class="container" v-show="tabsActive.issue">
+                <div class="columns">
+                    <div class="column">
+                        <nav class="pagination">
+                            <a class="pagination-previous" @click="selectIssuePage('-1')">上一页</a>
+                            <a class="pagination-next" @click="selectIssuePage('+1')">下一页</a>
+                            <ul class="pagination-list">
+                                <li v-for="page in issuePageList()">
+                                    <span v-if="page.paginationEllipsis" class="pagination-ellipsis">&hellip;</span>
+                                    <a v-else class="pagination-link" :class="{'is-current': page.isCurrent}" v-text="page.page" @click="selectIssuePage(page.page)"></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="columns is-multiline">
+                    <div class="column is-6" v-for="issue in issues">
+                        <div class="box">
+                            <div class="content">
+                                <p>
+                                    <strong v-text="issue.name"></strong>
+                                    <span v-text="issue.contact"></span>
+                                    <small v-text="issue.create_time"></small>
+                                    <small>#{{ issue.id }}</small>
+                                </p>
+                                <p v-text="issue.content"></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="container" v-show="tabsActive.logout">

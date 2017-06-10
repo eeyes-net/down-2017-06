@@ -4,6 +4,7 @@ namespace app\Admin\controller;
 
 use app\common\model\DownFile;
 use app\common\model\DownList;
+use app\common\model\Issue;
 use think\Controller;
 use think\exception\HttpResponseException;
 use think\Response;
@@ -236,6 +237,17 @@ class Index extends Controller
         }
         $rel_path = substr($info->getRealPath(), strlen(config('filesystem.root')) + 1);
         return json($rel_path);
+    }
+
+    /**
+     * 返回反馈意见列表
+     *
+     * @return \think\response\Json
+     */
+    public function getIssues()
+    {
+        $page = request()->get('page/d');
+        return json(Issue::order('create_time desc, id desc')->paginate(20));
     }
 
     /**
