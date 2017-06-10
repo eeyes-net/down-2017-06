@@ -1,5 +1,4 @@
 var data = {
-    title: '',
     content: '',
     name: '',
     contact: '',
@@ -14,7 +13,6 @@ var vm = new Vue({
                 method: 'post',
                 url: '/issue/',
                 data: {
-                    title: data.title,
                     content: data.content,
                     name: data.name,
                     contact: data.contact

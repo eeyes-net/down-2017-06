@@ -28,9 +28,8 @@ class Issue extends Migrator
     public function change()
     {
         $this->table('issue', ['engine' => 'MyISAM'])
-            ->addColumn('name', 'text', ['comment' => '称呼'])
-            ->addColumn('title', 'text', ['comment' => '标题'])
             ->addColumn('content', 'text', ['comment' => '内容'])
+            ->addColumn('name', 'text', ['comment' => '称呼'])
             ->addColumn('contact', 'text', ['comment' => '联系方式'])
             ->addColumn('create_time', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
             ->create();

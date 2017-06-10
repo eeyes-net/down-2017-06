@@ -4,6 +4,7 @@ namespace app\index\controller;
 
 use app\common\model\DownList;
 use app\common\model\Issue;
+use think\Hook;
 
 class Index
 {
@@ -16,17 +17,17 @@ class Index
     public function saveIssue()
     {
         $issue = new Issue();
-        $issue->title = request()->post('title');
-        if (!$issue->title) {
+        $issue->content = request()->post('content');
+        if (!$issue->content) {
             return json([
                 'code' => 400,
-                'msg' => '反馈概述不能为空',
+                'msg' => '内容不能为空',
             ]);
         }
-        $issue->content = request()->post('content');
         $issue->name = request()->post('name');
         $issue->contact = request()->post('contact');
         $issue->save();
+        Hook::listen('issue_save');
         return json([
             'code' => 200,
             'msg' => '提交反馈成功',
