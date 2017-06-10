@@ -1,5 +1,7 @@
 <?php
 
+use think\Env;
+
 return [
-    'admin' => 'admin',
+    'admin' => Env::get('password.admin', 'admin'),
 ];
