@@ -187,6 +187,8 @@ html, body {
 .main-card-title:hover {
     height: initial;
     background-color: #fafafa;
+    border-bottom: 1px solid #dcdfe0;
+    z-index: 1000;
     overflow: initial;
 }
 
@@ -206,6 +208,8 @@ html, body {
     position: relative;
     height: initial;
     background-color: #fafafa;
+    border-bottom: 1px solid #dcdfe0;
+    z-index: 1000;
     overflow: initial;
 }
 
