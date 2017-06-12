@@ -54,13 +54,13 @@
                                 <p class="main-card-footer-version">{if ($item->hasWinFile())} Win: {$item->winFile->version|htmlentities}{/if}{if ($item->hasMacFile())} Mac: {$item->macFile->version|htmlentities}{/if}</p>
                                 <div class="main-card-footer-button-group">
                                     {if ($item->hasWinFile())}
-                                    <a class="main-card-footer-button" href="/{$item->winFile->path|htmlentities}" title="{$item->winFile->size|readable_size|htmlentities}">
+                                    <a class="main-card-footer-button" href="{:url('index/Index/downWin', ['id' => $item->id])}" title="{$item->winFile->size|readable_size|htmlentities}">
                                         <img class="main-card-footer-button-icon win" src="/static/index/images/win.png" alt="WIN版本">
                                         <span class="main-card-footer-button-text">WIN版本</span>
                                     </a>
                                     {/if}
                                     {if ($item->hasMacFile())}
-                                    <a class="main-card-footer-button" href="/{$item->macFile->path|htmlentities}" title="{$item->macFile->size|readable_size|htmlentities}">
+                                    <a class="main-card-footer-button" href="{:url('index/Index/downMac', ['id' => $item->id])}" title="{$item->macFile->size|readable_size|htmlentities}">
                                         <img class="main-card-footer-button-icon mac" src="/static/index/images/mac.png" alt="WIN版本">
                                         <span class="main-card-footer-button-text">MAC版本</span>
                                     </a>

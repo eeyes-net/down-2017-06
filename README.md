@@ -34,6 +34,14 @@ e瞳网文件分享平台
 
 5. 执行`php think migrate:run`
 
+6. 默认下载文件所在目录是`/public/upload/down/`，图标所在目录是`/public/upload/icon/`。本项目为了防止盗链，要求在Nginx虚拟服务器配置文件中加入
+
+    ```nginx
+    location /upload/down/ {
+        internal;
+    }
+    ```
+
 ## 说明
 
 * 本项目使用[ThinkPHP5.0](http://www.thinkphp.cn/)开发，开发请参考[ThinkPHP5.0完全开发手册](http://www.kancloud.cn/manual/thinkphp5)
