@@ -5,7 +5,6 @@ namespace app\index\controller;
 use app\common\model\DownList;
 use app\common\model\Issue;
 use app\common\model\Log;
-use think\exception\HttpResponseException;
 use think\Hook;
 use think\Session;
 
