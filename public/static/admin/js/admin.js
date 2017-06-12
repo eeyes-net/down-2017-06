@@ -71,7 +71,7 @@ var vm = new Vue({
                 }
             });
         },
-        refreshData: function () {
+        refreshFilesData: function () {
             axios({
                 method: 'get',
                 url: '/admin/files',
@@ -80,6 +80,9 @@ var vm = new Vue({
             .then(function (response) {
                 data.downFiles = response.data;
             });
+        },
+        refreshData: function () {
+            this.refreshFilesData();
             axios({
                 method: 'get',
                 url: '/admin/list',
@@ -97,6 +100,18 @@ var vm = new Vue({
                 data.icons = response.data;
             });
             this.getIssues(1);
+        },
+        refreshFiles: function () {
+            axios({
+                method: 'get',
+                url: '/admin/files/refresh',
+                responseType: 'json'
+            })
+            .then(function (response) {
+                if (response.data) {
+                    vm.refreshFilesData();
+                }
+            });
         },
         enabledFiles: function () {
             var result = [];

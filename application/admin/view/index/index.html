@@ -35,6 +35,11 @@
                 </ul>
             </div>
             <div class="container" v-show="tabsActive.downFiles">
+                <div class="columns">
+                    <div class="column">
+                        <a class="button is-info" @click="refreshFiles"><span>更新服务器文件列表</span></a>
+                    </div>
+                </div>
                 <table class="table">
                     <thead>
                         <tr>
