@@ -4,8 +4,7 @@ use think\Route;
 
 Route::get('/', 'index/Index/index');
 Route::get('list', 'index/Index/getDownList');
-Route::get('down/:id/win', 'index/Index/downWin');
-Route::get('down/:id/mac', 'index/Index/downMac');
+Route::get('down/:id/:type', 'index/Index/down');
 Route::post('issue', 'index/Index/saveIssue');
 
 Route::group('cas', function () {

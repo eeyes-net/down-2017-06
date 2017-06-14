@@ -56,42 +56,55 @@ class Index extends Controller
         ]);
     }
 
-    private function down($id, $type)
+    /**
+     * 利用Nginx的X-Sendfile协议下载文件
+     *
+     * @param int $id
+     * @param string $type 'win'或'mac'
+     *
+     * @return $this|\think\Response
+     */
+    public function down($id, $type)
     {
-        $item = DownList::get($id);
+        $item = DownList::get((int)$id);
         $log = new Log();
         $log->url = request()->url();
         $log->file_id = 0;
         $log->file_name = '';
         $log->username = '';
+        $log->status = '404';
         init_php_cas();
         if (phpCAS::isAuthenticated()) {
             $log->username = phpCAS::getUser();
         }
         $log->ua = request()->header('User-Agent');
         $log->ip = request()->ip();
-        if (!$item) {
-            $log->status = '404';
+        if (!($item && ($item->enabled || Session::get('is_login')))) {
             $log->save();
-            return response(null, 404);
-        }
-        if (!($item->enabled || Session::get('is_login'))) {
-            $log->status = '403';
-            $log->save();
-            return response(null, 403);
+            $this->error('对不起，这个文件不存在');
+            return;
         }
         switch ($type) {
             case 'win':
                 if (!$item->hasWinFile()) {
-                    return response(null, 404);
+                    $log->save();
+                    $this->error('对不起，这个文件没有WIN版本');
+                    return;
                 }
                 $downFile = $item->winFile;
                 break;
             case 'mac':
                 if (!$item->hasMacFile()) {
-                    return response(null, 404);
+                    $log->save();
+                    $this->error('对不起，这个文件没有MAC版本');
+                    return;
                 }
                 $downFile = $item->macFile;
+                break;
+            default:
+                $log->save();
+                $this->error('对不起，文件版本错误');
+                return;
                 break;
         }
         $log->status = '200';
@@ -102,16 +115,6 @@ class Index extends Controller
             'Content-Disposition' => 'attachment; filename=' . $downFile->name,
             'X-Accel-Redirect' => '/' . $downFile->path, // Only for Nginx. Please add 'internal;' in 'location /upload/down/' block.
         ])->contentType('application/octet-stream');
-    }
-
-    public function downWin($id)
-    {
-        return $this->down($id, 'win');
-    }
-
-    public function downMac($id)
-    {
-        return $this->down($id, 'mac');
     }
 
     public function saveIssue()
