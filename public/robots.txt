@@ -1,2 +1,6 @@
 User-agent: *
-Disallow:
+Disallow: /list
+Disallow: /issue
+Disallow: /down
+Disallow: /cas
+Disallow: /admin
