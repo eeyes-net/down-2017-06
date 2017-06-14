@@ -88,6 +88,9 @@ function cidr_match($ip, $range)
  */
 function init_php_cas()
 {
+    if (phpCAS::isInitialized()) {
+        return;
+    }
     phpCAS::client(config('cas.server_version'), config('cas.server_hostname'), config('cas.server_port'), config('cas.server_uri'));
     if (config('app_debug')) {
         phpCAS::setVerbose(true);

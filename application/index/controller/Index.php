@@ -6,6 +6,7 @@ use app\common\model\DownList;
 use app\common\model\Issue;
 use app\common\model\Log;
 use app\traits\controller\CheckPermission;
+use phpCAS;
 use think\Controller;
 use think\Hook;
 use think\Session;
@@ -62,6 +63,11 @@ class Index extends Controller
         $log->url = request()->url();
         $log->file_id = 0;
         $log->file_name = '';
+        $log->username = '';
+        init_php_cas();
+        if (phpCAS::isAuthenticated()) {
+            $log->username = phpCAS::getUser();
+        }
         $log->ua = request()->header('User-Agent');
         $log->ip = request()->ip();
         if (!$item) {

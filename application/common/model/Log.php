@@ -13,6 +13,7 @@ use think\Model;
  * @property string $status 状态
  * @property string $file_id 文件id
  * @property string $file_name 文件名
+ * @property string $username 用户名
  * @property string $ua User Agent
  * @property string $ip IP
  * @property string $create_time
