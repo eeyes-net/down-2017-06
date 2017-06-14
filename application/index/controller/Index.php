@@ -126,6 +126,11 @@ class Index extends Controller
         }
         $issue->name = request()->post('name');
         $issue->contact = request()->post('contact');
+        $issue->username = '';
+        init_php_cas();
+        if (phpCAS::isAuthenticated()) {
+            $issue->username = phpCAS::getUser();
+        }
         $issue->save();
         Hook::listen('issue_save');
         return json([

@@ -13,6 +13,7 @@ use think\Model;
  * @property string $title 标题
  * @property string $content 内容
  * @property string $contact 联系方式
+ * @property string $username 用户名
  */
 class Issue extends Model
 {
