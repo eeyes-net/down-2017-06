@@ -19,11 +19,21 @@ class Index extends Controller
         'checkPermission' => ['except' => ['index']],
     ];
 
+    /**
+     * 直接返回主页HTML
+     *
+     * @return \think\response\View
+     */
     public function index()
     {
         return view();
     }
 
+    /**
+     * 获取文件列表
+     *
+     * @return \think\response\Json
+     */
     public function getDownList()
     {
         $downList = DownList::where('enabled', '1')->order(['rank', 'id'])->with(['winFile', 'macFile'])->select();
@@ -117,6 +127,11 @@ class Index extends Controller
         ])->contentType('application/octet-stream');
     }
 
+    /**
+     * 保存反馈建议
+     *
+     * @return \think\response\Json
+     */
     public function saveIssue()
     {
         $issue = new Issue();

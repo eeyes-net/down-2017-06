@@ -14,12 +14,20 @@ class CasLogin extends Controller
         init_php_cas();
     }
 
+    /**
+     * CAS登录
+     *
+     * @return \think\response\Redirect
+     */
     public static function login()
     {
         phpCAS::forceAuthentication();
         return redirect(url('index/Index/index'));
     }
 
+    /**
+     * CAS注销
+     */
     public function logout()
     {
         phpCAS::logoutWithRedirectService(request()->domain() . '/');
