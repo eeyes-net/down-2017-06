@@ -13,9 +13,15 @@
 use think\Route;
 
 Route::get('/', 'index/Index/index');
+Route::get('list', 'index/Index/getDownList');
 Route::get('down/:id/win', 'index/Index/downWin');
 Route::get('down/:id/mac', 'index/Index/downMac');
 Route::post('issue', 'index/Index/saveIssue');
+
+Route::group('cas', function () {
+    Route::get('login', 'auth/CasLogin/login');
+    Route::get('logout', 'auth/CasLogin/logout');
+});
 
 Route::group('admin', function () {
     Route::get('/', 'admin/Index/index');

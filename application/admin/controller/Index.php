@@ -5,6 +5,7 @@ namespace app\Admin\controller;
 use app\common\model\DownFile;
 use app\common\model\DownList;
 use app\common\model\Issue;
+use app\traits\controller\CheckPermission;
 use think\Controller;
 use think\exception\HttpResponseException;
 use think\Response;
@@ -12,7 +13,10 @@ use think\Session;
 
 class Index extends Controller
 {
+    use CheckPermission;
+
     protected $beforeActionList = [
+        'checkPermission',
         'mustLogin' => ['except' => ['index', 'login', 'logout']],
     ];
 

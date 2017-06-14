@@ -55,3 +55,43 @@ function readable_size($bytes)
     }
     return round($bytes / 1073741824, 1) . 'G';
 }
+
+/**
+ * IP掩码检查
+ *
+ * @link https://stackoverflow.com/questions/594112/matching-an-ip-to-a-cidr-mask-in-php-5/594134#594134
+ *
+ * @param string $ip IP
+ * @param string|array $range IP掩码
+ *
+ * @return bool
+ */
+function cidr_match($ip, $range)
+{
+    if (is_array($range)) {
+        foreach ($range as $range1) {
+            if (cidr_match($ip, $range1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    list($subnet, $bits) = explode('/', $range);
+    $ip = ip2long($ip);
+    $subnet = ip2long($subnet);
+    $mask = -1 << (32 - $bits);
+    return ($ip & $mask) === ($subnet & $mask);
+}
+
+/**
+ * 初始化phpCAS配置
+ */
+function init_php_cas()
+{
+    phpCAS::client(config('cas.server_version'), config('cas.server_hostname'), config('cas.server_port'), config('cas.server_uri'));
+    if (config('app_debug')) {
+        phpCAS::setVerbose(true);
+        phpCAS::setDebug(LOG_PATH . 'phpCAS.log');
+        phpCAS::setNoCasServerValidation();
+    }
+}

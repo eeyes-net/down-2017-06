@@ -33,50 +33,45 @@
         </div>
     </aside>
 
-    <main class="main">
-        <div class="main-body">
-            <ul class="main-list-ul">
-                {foreach ($downList as $item)}
-                {if ($item->hasWinFile() || $item->hasMacFile())}
-                <li class="main-list-li">
-                    <article class="main-card">
-                        <div class="main-card-body">
-                            <div class="main-card-header">
-                                <div class="main-card-icon">
-                                    <img class="main-card-icon-img" src="/{$item->icon_path|htmlentities}" alt="软件图标">
-                                </div>
-                                <h1 class="main-card-title">{$item->name|htmlentities}</h1>
-                            </div>
-                            <div class="main-card-content">
-                                <p class="main-card-content-text">{$item->description|htmlentities}</p>
-                            </div>
-                            <div class="main-card-footer">
-                                <p class="main-card-footer-version">{if ($item->hasWinFile())} Win: {$item->winFile->version|htmlentities}{/if}{if ($item->hasMacFile())} Mac: {$item->macFile->version|htmlentities}{/if}</p>
-                                <div class="main-card-footer-button-group">
-                                    {if ($item->hasWinFile())}
-                                    <a class="main-card-footer-button" href="{:url('index/Index/downWin', ['id' => $item->id])}" title="{$item->winFile->size|readable_size|htmlentities}">
-                                        <img class="main-card-footer-button-icon win" src="/static/index/images/win.png" alt="WIN版本">
-                                        <span class="main-card-footer-button-text">WIN版本</span>
-                                    </a>
-                                    {/if}
-                                    {if ($item->hasMacFile())}
-                                    <a class="main-card-footer-button" href="{:url('index/Index/downMac', ['id' => $item->id])}" title="{$item->macFile->size|readable_size|htmlentities}">
-                                        <img class="main-card-footer-button-icon mac" src="/static/index/images/mac.png" alt="WIN版本">
-                                        <span class="main-card-footer-button-text">MAC版本</span>
-                                    </a>
-                                    {/if}
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                </li>
-                {/if}
-                {/foreach}
-            </ul>
-        </div>
-    </main>
-
     <div id="root">
+        <main class="main">
+            <div class="main-body">
+                <div class="notification is-danger" style="margin-top: 1.5rem" v-if="errMsg">
+                    <a :href="errMsgLink" v-text="errMsg"></a>
+                </div>
+                <ul class="main-list-ul" v-else>
+                    <li class="main-list-li" v-for="item in downList">
+                        <article class="main-card">
+                            <div class="main-card-body">
+                                <div class="main-card-header">
+                                    <div class="main-card-icon">
+                                        <img class="main-card-icon-img" :src="item.icon_path" alt="软件图标">
+                                    </div>
+                                    <h1 class="main-card-title" v-text="item.name"></h1>
+                                </div>
+                                <div class="main-card-content">
+                                    <p class="main-card-content-text" v-text="item.description"></p>
+                                </div>
+                                <div class="main-card-footer">
+                                    <p class="main-card-footer-version"><span v-if="item.winFile"> Win: {{ item.winFile.version }}</span><span v-if="item.macFile"> Mac: {{ item.macFile.version }}</span></p>
+                                    <div class="main-card-footer-button-group">
+                                        <a class="main-card-footer-button" :href="'/down/' + item.id + '/win'" :title="readableSize(item.winFile.size)" v-if="item.winFile">
+                                            <img class="main-card-footer-button-icon win" src="/static/index/images/win.png" alt="WIN版本">
+                                            <span class="main-card-footer-button-text">WIN版本</span>
+                                        </a>
+                                        <a class="main-card-footer-button" :href="'/down/' + item.id + '/mac'" :title="readableSize(item.macFile.size)" v-if="item.macFile">
+                                            <img class="main-card-footer-button-icon mac" src="/static/index/images/mac.png" alt="MAC版本">
+                                            <span class="main-card-footer-button-text">MAC版本</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </li>
+                </ul>
+            </div>
+        </main>
+
         <footer class="my-footer">
             <div class="my-footer-box" @click="showModal">如果有其他需要的软件，点击这里向我们反馈</div>
         </footer>

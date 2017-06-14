@@ -46,6 +46,7 @@ e瞳网文件分享平台
 
 * 本项目使用[ThinkPHP5.0](http://www.thinkphp.cn/)开发，开发请参考[ThinkPHP5.0完全开发手册](http://www.kancloud.cn/manual/thinkphp5)
 * 访问`/admin`进入后台管理页面
+* 主页可以自由访问，其余功能（包括获取文件列表、下载文件、意见反馈、后台管理）都需要在校园网匿名或使用CAS登录之后才可以进行
 
 ## CONTRIBUTORS
 

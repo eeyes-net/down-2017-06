@@ -5,15 +5,54 @@ namespace app\index\controller;
 use app\common\model\DownList;
 use app\common\model\Issue;
 use app\common\model\Log;
+use app\traits\controller\CheckPermission;
+use think\Controller;
 use think\Hook;
 use think\Session;
 
-class Index
+class Index extends Controller
 {
+    use CheckPermission;
+
+    protected $beforeActionList = [
+        'checkPermission' => ['except' => ['index']],
+    ];
+
     public function index()
     {
+        return view();
+    }
+
+    public function getDownList()
+    {
         $downList = DownList::where('enabled', '1')->order(['rank', 'id'])->with(['winFile', 'macFile'])->select();
-        return view('', compact('downList'));
+        $data = [];
+        /** @var DownList $item */
+        foreach ($downList as $item) {
+            $tmp = [
+                'id' => $item->id,
+                'name' => $item->name,
+                'description' => $item->description,
+            ];
+            if ($item->hasWinFile()) {
+                $tmp['winFile'] = [
+                    'version' => $item->winFile->version,
+                    'size' => $item->winFile->size,
+                ];
+            }
+            if ($item->hasMacFile()) {
+                $tmp['macFile'] = [
+                    'version' => $item->macFile->version,
+                    'size' => $item->macFile->size,
+                ];
+            }
+            $data[] = $tmp;
+        }
+        return json([
+            'code' => 200,
+            'data' => $data,
+            'msg' => 'OK',
+        ]);
     }
 
     private function down($id, $type)
