@@ -31,6 +31,7 @@
                     <li :class="{'is-active': tabsActive.downList}"><a @click="changeTab('downList')">软件管理</a></li>
                     <li :class="{'is-active': tabsActive.downListSort}"><a @click="changeTab('downListSort')">软件排序</a></li>
                     <li :class="{'is-active': tabsActive.issue}"><a @click="changeTab('issue')">意见反馈</a></li>
+                    <li :class="{'is-active': tabsActive.stats}"><a @click="changeTab('stats')">下载统计</a></li>
                     <li :class="{'is-active': tabsActive.logout}"><a @click="changeTab('logout')">退出登录</a></li>
                 </ul>
             </div>
@@ -223,6 +224,36 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="container" v-show="tabsActive.stats">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>下载次数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="stat in statsByDate">
+                            <td v-text="stat.date"></td>
+                            <td v-text="stat.count"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>文件名</th>
+                            <th>下载次数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="stat in statsByFile">
+                            <td v-text="stat.file_name"></td>
+                            <td v-text="stat.count"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="container" v-show="tabsActive.logout">
                 <div class="columns is-mobile">

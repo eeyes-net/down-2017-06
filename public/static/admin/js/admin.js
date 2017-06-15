@@ -6,6 +6,7 @@ var data = {
         downList: false,
         downListSort: false,
         issue: false,
+        stats: false,
         logout: false
     },
     notification: '',
@@ -15,6 +16,8 @@ var data = {
     issues: [],
     issueCurrentPage: 1,
     issueLastPage: 1,
+    statsByDate: [],
+    statsByFile: [],
     isModalIconsShow: false,
     currentModalIconsItem: null,
     fileUploadFile: null,
@@ -100,6 +103,22 @@ var vm = new Vue({
                 data.icons = response.data;
             });
             this.getIssues(1);
+            axios({
+                method: 'get',
+                url: '/admin/stats/date',
+                responseType: 'json'
+            })
+            .then(function (response) {
+                data.statsByDate = response.data;
+            });
+            axios({
+                method: 'get',
+                url: '/admin/stats/file',
+                responseType: 'json'
+            })
+            .then(function (response) {
+                data.statsByFile = response.data;
+            });
         },
         refreshFiles: function () {
             axios({

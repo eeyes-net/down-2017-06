@@ -28,4 +28,6 @@ Route::group('admin', function () {
     Route::get('icons', 'admin/Index/getIcons');
     Route::post('icons', 'admin/Index/uploadIcon');
     Route::get('issues', 'admin/Index/getIssues');
+    Route::get('stats/date', 'admin/Index/getStatsByDate');
+    Route::get('stats/file', 'admin/Index/getStatsByFile');
 });

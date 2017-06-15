@@ -5,6 +5,7 @@ namespace app\Admin\controller;
 use app\common\model\DownFile;
 use app\common\model\DownList;
 use app\common\model\Issue;
+use app\common\model\Log;
 use app\traits\controller\CheckPermission;
 use think\Controller;
 use think\exception\HttpResponseException;
@@ -252,6 +253,24 @@ class Index extends Controller
     {
         $page = request()->get('page/d');
         return json(Issue::order('create_time desc, id desc')->paginate(20));
+    }
+
+    /**
+     * 按日期统计下载次数
+     *
+     * @return \think\response\Json
+     */
+    public function getStatsByDate() {
+        return json(Log::where('status', '200')->field('DATE(`create_time`) AS `date`, COUNT(DISTINCT `url`) AS `count`')->group('date')->order('date', 'desc')->limit(30)->select());
+    }
+
+    /**
+     * 按文件统计下载次数
+     *
+     * @return \think\response\Json
+     */
+    public function getStatsByFile() {
+        return json(Log::where('status', '200')->field('`file_name`, COUNT(DISTINCT `url`) AS `count`')->group('file_name')->order('count', 'desc')->select());
     }
 
     /**
