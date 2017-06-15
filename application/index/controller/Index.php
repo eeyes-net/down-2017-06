@@ -82,6 +82,7 @@ class Index extends Controller
         $log->url = request()->url();
         $log->file_id = 0;
         $log->file_name = '';
+        $log->bytes_range = isset($_SERVER['HTTP_RANGE']) ? (string)$_SERVER['HTTP_RANGE'] : '';
         $log->username = '';
         $log->status = '404';
         init_php_cas();
@@ -93,6 +94,11 @@ class Index extends Controller
         if (!($item && ($item->enabled || Session::get('is_login')))) {
             $log->save();
             $this->error('对不起，这个文件不存在');
+            return;
+        }
+        if (!request()->has('t')) {
+            $log->save();
+            $this->error('缺少参数t');
             return;
         }
         switch ($type) {
