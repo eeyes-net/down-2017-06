@@ -44,6 +44,7 @@ class Index extends Controller
                 'id' => $item->id,
                 'name' => $item->name,
                 'description' => $item->description,
+                'icon_path' => $item->icon_path,
             ];
             if ($item->hasWinFile()) {
                 $tmp['winFile'] = [
