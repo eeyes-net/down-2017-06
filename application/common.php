@@ -14,19 +14,19 @@ function &scan_file($path, $root)
     $files = array_diff(scandir($path), array('..', '.'));
     $ret_arr = [];
     foreach ($files as &$file) {
-        $file_path = $path . '/' . $file;
+        $file_path = $path . DS . $file;
         if (is_dir($file_path)) {
             $ret_arr = array_merge($ret_arr, scan_file($file_path, $root));
         } else {
             // 获取绝对路径
             $abs_path = realpath($file_path);
             // 判断是否以指定根目录开始
-            if (strpos($abs_path, $root) === 0) {
+            if (strpos($file_path, $root) === 0) {
                 $ret_arr[] = [
                     'name' => $file,
                     'path' => $file_path,
-                    // 'abs_path' => $abs_path,
-                    'rel_path' => substr($abs_path, strlen($root) + 1), // 除去首部的根目录，转换为相对路径
+                    'abs_path' => $abs_path,
+                    'rel_path' => substr($file_path, strlen($root) + 1), // 除去首部的根目录，转换为相对路径
                     'size' => filesize($abs_path),
                 ];
             }
