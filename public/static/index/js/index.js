@@ -1,4 +1,5 @@
 var data = {
+    search: '',
     downList: [],
     errMsg: '',
     errMsgLink: '',
@@ -12,6 +13,19 @@ var vm = new Vue({
     data: data,
     mounted: function () {
         this.getList();
+    },
+    computed: {
+        searchDownList: function () {
+            var searchRegExp = new RegExp(data.search, 'i');
+            var result = [];
+            for (var i = 0; i < data.downList.length; ++i) {
+                var item = data.downList[i];
+                if (item.name.match(searchRegExp) || item.description.match(searchRegExp)) {
+                    result.push(item);
+                }
+            }
+            return result;
+        }
     },
     methods: {
         getList: function () {

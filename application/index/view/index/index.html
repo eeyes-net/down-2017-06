@@ -34,13 +34,21 @@
     </aside>
 
     <div id="root">
+        <aside class="search">
+            <div class="search-body">
+                <div class="search-text-container">
+                    <input type="text" class="search-input" placeholder="软件筛选" v-model="search">
+                </div>
+            </div>
+        </aside>
+
         <main class="main">
             <div class="main-body">
                 <div class="notification is-danger" style="margin-top: 1.5rem" v-if="errMsg">
                     <a :href="errMsgLink" v-text="errMsg"></a>
                 </div>
                 <ul class="main-list-ul" v-else>
-                    <li class="main-list-li" v-for="item in downList">
+                    <li class="main-list-li" v-for="item in searchDownList">
                         <article class="main-card">
                             <div class="main-card-body">
                                 <div class="main-card-header">
