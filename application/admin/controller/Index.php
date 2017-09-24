@@ -7,7 +7,7 @@ use app\common\model\DownList;
 use app\common\model\Issue;
 use app\common\model\Log;
 use app\traits\controller\CheckPermission;
-use Eeyes\Api\Permission;
+use Eeyes\Common\Api\Eeyes\Permission;
 use phpCAS;
 use think\Controller;
 use think\exception\HttpResponseException;
