@@ -1,5 +1,4 @@
 var data = {
-    isLogin: false,
     password: '',
     tabsActive: {
         downFiles: true,
@@ -27,53 +26,10 @@ var data = {
 var vm = new Vue({
     el: '#root',
     data: data,
-    watch: {
-        isLogin: function (val) {
-            if (val) {
-                this.refreshData();
-            }
-        }
-    },
     mounted: function () {
-        this.getIsLogin();
+        this.refreshData();
     },
     methods: {
-        getIsLogin: function () {
-            axios({
-                method: 'get',
-                url: '/admin/auth'
-            })
-            .then(function (response) {
-                if (response.data) {
-                    data.isLogin = (true === response.data);
-                }
-            });
-        },
-        login: function () {
-            axios({
-                method: 'post',
-                url: '/admin/auth/login',
-                data: {
-                    password: data.password
-                }
-            })
-            .then(function (response) {
-                if (response.data) {
-                    data.isLogin = true;
-                }
-            });
-        },
-        logout: function () {
-            axios({
-                method: 'post',
-                url: '/admin/auth/logout'
-            })
-            .then(function (response) {
-                if (response.data) {
-                    data.isLogin = false;
-                }
-            });
-        },
         refreshFilesData: function () {
             axios({
                 method: 'get',

@@ -14,8 +14,6 @@ Route::group('cas', function () {
 
 Route::group('admin', function () {
     Route::get('/', 'admin/Index/index');
-    Route::get('auth', 'admin/Index/isLogin');
-    Route::post('auth/login', 'admin/Index/login');
     Route::post('auth/logout', 'admin/Index/logout');
     Route::get('files/refresh', 'admin/Index/refreshFiles');
     Route::get('files', 'admin/Index/getFiles');

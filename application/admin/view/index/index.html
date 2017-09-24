@@ -24,314 +24,275 @@
     </header>
 
     <div id="root">
-        <div v-if="isLogin">
-            <div class="tabs">
-                <ul>
-                    <li :class="{'is-active': tabsActive.downFiles}"><a @click="changeTab('downFiles')">文件版本</a></li>
-                    <li :class="{'is-active': tabsActive.downList}"><a @click="changeTab('downList')">软件管理</a></li>
-                    <li :class="{'is-active': tabsActive.downListSort}"><a @click="changeTab('downListSort')">软件排序</a></li>
-                    <li :class="{'is-active': tabsActive.issue}"><a @click="changeTab('issue')">意见反馈</a></li>
-                    <li :class="{'is-active': tabsActive.stats}"><a @click="changeTab('stats')">下载统计</a></li>
-                    <li :class="{'is-active': tabsActive.logout}"><a @click="changeTab('logout')">退出登录</a></li>
-                </ul>
-            </div>
-            <div class="container" v-show="tabsActive.downFiles">
-                <div class="columns">
-                    <div class="column">
-                        <a class="button is-info" @click="refreshFiles"><span>更新服务器文件列表</span></a>
-                    </div>
+        <div class="tabs">
+            <ul>
+                <li :class="{'is-active': tabsActive.downFiles}"><a @click="changeTab('downFiles')">文件版本</a></li>
+                <li :class="{'is-active': tabsActive.downList}"><a @click="changeTab('downList')">软件管理</a></li>
+                <li :class="{'is-active': tabsActive.downListSort}"><a @click="changeTab('downListSort')">软件排序</a></li>
+                <li :class="{'is-active': tabsActive.issue}"><a @click="changeTab('issue')">意见反馈</a></li>
+                <li :class="{'is-active': tabsActive.stats}"><a @click="changeTab('stats')">下载统计</a></li>
+                <li :class="{'is-active': tabsActive.logout}"><a @click="changeTab('logout')">退出登录</a></li>
+            </ul>
+        </div>
+        <div class="container" v-show="tabsActive.downFiles">
+            <div class="columns">
+                <div class="column">
+                    <a class="button is-info" @click="refreshFiles"><span>更新服务器文件列表</span></a>
                 </div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>文件名</th>
-                            <th>大小</th>
-                            <th>版本号</th>
-                            <th>保存</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="downFile in downFiles">
-                            <td>
-                                <a v-if="downFile.enabled" :href="'/' + downFile.path" :title="'点击下载' + downFile.name" v-text="downFile.name"></a>
-                                <span v-else>{{ downFile.name }} (已失效)</span>
-                            </td>
-                            <td>{{ downFile.size | readableSize }}</td>
-                            <td>
-                                <input class="input" type="text" v-model="downFile.version">
-                            </td>
-                            <td>
-                                <a class="button is-success" @click="updateFile(downFile)"><span class="icon is-small"><i class="fa fa-check"></i></span><span>保存</span></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
-            <div class="container" v-show="tabsActive.downList">
-                <div class="columns is-multiline">
-                    <div class="column is-6" v-for="item in downList">
-                        <div class="box">
-                            <div class="field is-horizontal">
-                                <div class="field-label is-normal">
-                                    <label class="label">图标</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <div class="control">
-                                            <figure class="image is-64x64" @click="showModalIcons(item)">
-                                                <div class="image is-square">
-                                                    <img :src="'/' + item.icon_path">
-                                                </div>
-                                            </figure>
-                                        </div>
-                                    </div>
-                                </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>版本号</th>
+                        <th>保存</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="downFile in downFiles">
+                        <td>
+                            <a v-if="downFile.enabled" :href="'/' + downFile.path" :title="'点击下载' + downFile.name" v-text="downFile.name"></a>
+                            <span v-else>{{ downFile.name }} (已失效)</span>
+                        </td>
+                        <td>{{ downFile.size | readableSize }}</td>
+                        <td>
+                            <input class="input" type="text" v-model="downFile.version">
+                        </td>
+                        <td>
+                            <a class="button is-success" @click="updateFile(downFile)"><span class="icon is-small"><i class="fa fa-check"></i></span><span>保存</span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="container" v-show="tabsActive.downList">
+            <div class="columns is-multiline">
+                <div class="column is-6" v-for="item in downList">
+                    <div class="box">
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label">图标</label>
                             </div>
-                            <div class="field is-horizontal">
-                                <div class="field-label is-normal">
-                                    <label class="label">名称</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <div class="control">
-                                            <input class="input" type="text" v-model="item.name">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field is-horizontal">
-                                <div class="field-label is-normal">
-                                    <label class="label">描述</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <div class="control">
-                                            <textarea class="textarea" v-model="item.description"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field is-horizontal">
-                                <div class="field-label is-normal">
-                                    <label class="label">Win版</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field is-narrow">
-                                        <div class="control">
-                                            <div class="select is-fullwidth">
-                                                <select v-model="item.win_id">
-                                                    <option value="0">（无）</option>
-                                                    <option v-for="downFile in enabledFiles()" v-text="downFile.name" :value="downFile.id"></option>
-                                                </select>
+                            <div class="field-body">
+                                <div class="field">
+                                    <div class="control">
+                                        <figure class="image is-64x64" @click="showModalIcons(item)">
+                                            <div class="image is-square">
+                                                <img :src="'/' + item.icon_path">
                                             </div>
-                                        </div>
+                                        </figure>
                                     </div>
                                 </div>
                             </div>
-                            <div class="field is-horizontal">
-                                <div class="field-label is-normal">
-                                    <label class="label">Mac版</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field is-narrow">
-                                        <div class="control">
-                                            <div class="select is-fullwidth">
-                                                <select v-model="item.mac_id">
-                                                    <option value="0">（无）</option>
-                                                    <option v-for="downFile in enabledFiles()" v-text="downFile.name" :value="downFile.id"></option>
-                                                </select>
-                                            </div>
-                                        </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label">名称</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input" type="text" v-model="item.name">
                                     </div>
                                 </div>
                             </div>
-                            <div class="field is-horizontal">
-                                <div class="field-label">
-                                    <label class="label">是否上架</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field is-narrow">
-                                        <div class="control">
-                                            <label class="checkbox">
-                                                <input type="checkbox" v-model="item.enabled"> 上架
-                                            </label>
-                                        </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label">描述</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <div class="control">
+                                        <textarea class="textarea" v-model="item.description"></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <div class="field is-horizontal">
-                                <div class="field-label">
-                                    <!-- Left empty for spacing -->
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <div class="control">
-                                            <a class="button is-success" @click="updateItem(item)"><span class="icon is-small"><i class="fa fa-check"></i></span><span>保存</span></a>
-                                            <a class="button is-danger" @click="deleteItem(item)"><span class="icon is-small"><i class="fa fa-times"></i></span><span>删除</span></a>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label">Win版</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field is-narrow">
+                                    <div class="control">
+                                        <div class="select is-fullwidth">
+                                            <select v-model="item.win_id">
+                                                <option value="0">（无）</option>
+                                                <option v-for="downFile in enabledFiles()" v-text="downFile.name" :value="downFile.id"></option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="column is-6">
-                        <div class="box">
-                            <a class="button is-info is-fullwidth" @click="createItem"><span class="icon is-small"><i class="fa fa-plus"></i></span><span>添加</span></a>
+                        <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label">Mac版</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field is-narrow">
+                                    <div class="control">
+                                        <div class="select is-fullwidth">
+                                            <select v-model="item.mac_id">
+                                                <option value="0">（无）</option>
+                                                <option v-for="downFile in enabledFiles()" v-text="downFile.name" :value="downFile.id"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container" v-show="tabsActive.downListSort">
-                <div class="notification is-info">上下拖动进行排序</div>
-                <div class="columns is-mobile">
-                    <div class="column is-8 is-offset-2">
-                        <draggable v-model="downList">
-                            <div class="box is-marginless" v-for="item in downList" v-text="item.name"></div>
-                        </draggable>
-                    </div>
-                </div>
-                <div class="block has-text-right">
-                    <a class="button is-success" @click="updateList"><span class="icon is-small"><i class="fa fa-check"></i></span><span>保存</span></a>
-                </div>
-            </div>
-            <div class="container" v-show="tabsActive.issue">
-                <div class="columns">
-                    <div class="column">
-                        <nav class="pagination">
-                            <a class="pagination-previous" @click="selectIssuePage('-1')">上一页</a>
-                            <a class="pagination-next" @click="selectIssuePage('+1')">下一页</a>
-                            <ul class="pagination-list">
-                                <li v-for="page in issuePageList()">
-                                    <span v-if="page.paginationEllipsis" class="pagination-ellipsis">&hellip;</span>
-                                    <a v-else class="pagination-link" :class="{'is-current': page.isCurrent}" v-text="page.page" @click="selectIssuePage(page.page)"></a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="columns is-multiline">
-                    <div class="column is-6" v-for="issue in issues">
-                        <div class="box">
-                            <div class="content">
-                                <p>
-                                    <strong v-text="issue.name"></strong>
-                                    <span v-text="issue.contact"></span>
-                                    <small v-text="issue.create_time"></small>
-                                    <small>#{{ issue.id }}</small>
-                                </p>
-                                <p v-text="issue.content"></p>
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label">是否上架</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field is-narrow">
+                                    <div class="control">
+                                        <label class="checkbox">
+                                            <input type="checkbox" v-model="item.enabled"> 上架
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field is-horizontal">
+                            <div class="field-label">
+                                <!-- Left empty for spacing -->
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <div class="control">
+                                        <a class="button is-success" @click="updateItem(item)"><span class="icon is-small"><i class="fa fa-check"></i></span><span>保存</span></a>
+                                        <a class="button is-danger" @click="deleteItem(item)"><span class="icon is-small"><i class="fa fa-times"></i></span><span>删除</span></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="container" v-show="tabsActive.stats">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>日期</th>
-                            <th>下载次数</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="stat in statsByDate">
-                            <td v-text="stat.date"></td>
-                            <td v-text="stat.count"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>文件名</th>
-                            <th>下载次数</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="stat in statsByFile">
-                            <td v-text="stat.file_name"></td>
-                            <td v-text="stat.count"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="container" v-show="tabsActive.logout">
-                <div class="columns is-mobile">
-                    <div class="column is-half is-offset-one-quarter">
-                        <a class="button is-fullwidth" @click="logout"><span>退出登录</span></a>
+                <div class="column is-6">
+                    <div class="box">
+                        <a class="button is-info is-fullwidth" @click="createItem"><span class="icon is-small"><i class="fa fa-plus"></i></span><span>添加</span></a>
                     </div>
-                </div>
-            </div>
-            <div class="modal" :class="{'is-active': isModalIconsShow}">
-                <div class="modal-background" @click="hideModalIcons"></div>
-                <div class="modal-card">
-                    <header class="modal-card-head">
-                        <p class="modal-card-title">从下方列表中选择图标，或者上传图标</p>
-                        <button class="delete" @click="hideModalIcons"></button>
-                    </header>
-                    <section class="modal-card-body">
-                        <article class="media" v-for="icon in icons" @click="changeIcon(icon)">
-                            <figure class="media-left">
-                                <div class="image is-32x32">
-                                    <img :src="'/' + icon">
-                                </div>
-                            </figure>
-                            <div class="media-content">
-                                <div class="content">
-                                    <p v-text="icon"></p>
-                                </div>
-                            </div>
-                        </article>
-                    </section>
-                    <footer class="modal-card-foot">
-                        <figure class="image is-32x32">
-                            <div class="image is-square">
-                                <img :src="iconUploaderPreviewSrc" v-if="iconUploaderPreviewSrc">
-                            </div>
-                        </figure>
-                        <input type="file" accept="image/*" @change="onIconUploaderChange">
-                        <a class="button is-info" @click="uploadIcon">上传新图标</a>
-                    </footer>
                 </div>
             </div>
         </div>
-        <div v-else>
-            <div class="tabs">
-                <ul>
-                    <li class="is-active"><a>后台登录</a></li>
-                </ul>
+        <div class="container" v-show="tabsActive.downListSort">
+            <div class="notification is-info">上下拖动进行排序</div>
+            <div class="columns is-mobile">
+                <div class="column is-8 is-offset-2">
+                    <draggable v-model="downList">
+                        <div class="box is-marginless" v-for="item in downList" v-text="item.name"></div>
+                    </draggable>
+                </div>
             </div>
-            <div class="container">
-                <div class="columns">
-                    <div class="column is-half is-offset-one-quarter">
-                        <div class="box">
-                            <div class="field is-horizontal">
-                                <div class="field-label is-normal">
-                                    <label class="label">密码</label>
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <div class="control">
-                                            <input class="input" type="password" autofocus @keyup.enter="login" v-model="password">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field is-horizontal">
-                                <div class="field-label">
-                                    <!-- Left empty for spacing -->
-                                </div>
-                                <div class="field-body">
-                                    <div class="field">
-                                        <div class="control">
-                                            <a class="button is-success" @click="login"><span>登录</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="block has-text-right">
+                <a class="button is-success" @click="updateList"><span class="icon is-small"><i class="fa fa-check"></i></span><span>保存</span></a>
+            </div>
+        </div>
+        <div class="container" v-show="tabsActive.issue">
+            <div class="columns">
+                <div class="column">
+                    <nav class="pagination">
+                        <a class="pagination-previous" @click="selectIssuePage('-1')">上一页</a>
+                        <a class="pagination-next" @click="selectIssuePage('+1')">下一页</a>
+                        <ul class="pagination-list">
+                            <li v-for="page in issuePageList()">
+                                <span v-if="page.paginationEllipsis" class="pagination-ellipsis">&hellip;</span>
+                                <a v-else class="pagination-link" :class="{'is-current': page.isCurrent}" v-text="page.page" @click="selectIssuePage(page.page)"></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="columns is-multiline">
+                <div class="column is-6" v-for="issue in issues">
+                    <div class="box">
+                        <div class="content">
+                            <p>
+                                <strong v-text="issue.name"></strong>
+                                <span v-text="issue.contact"></span>
+                                <small v-text="issue.create_time"></small>
+                                <small>#{{ issue.id }}</small>
+                            </p>
+                            <p v-text="issue.content"></p>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="container" v-show="tabsActive.stats">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>下载次数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="stat in statsByDate">
+                        <td v-text="stat.date"></td>
+                        <td v-text="stat.count"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>下载次数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="stat in statsByFile">
+                        <td v-text="stat.file_name"></td>
+                        <td v-text="stat.count"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="container" v-show="tabsActive.logout">
+            <div class="columns is-mobile">
+                <div class="column is-half is-offset-one-quarter">
+                    <form action="/admin/auth/logout" method="POST">
+                        <button class="button is-fullwidth"><span>退出登录</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal" :class="{'is-active': isModalIconsShow}">
+            <div class="modal-background" @click="hideModalIcons"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">从下方列表中选择图标，或者上传图标</p>
+                    <button class="delete" @click="hideModalIcons"></button>
+                </header>
+                <section class="modal-card-body">
+                    <article class="media" v-for="icon in icons" @click="changeIcon(icon)">
+                        <figure class="media-left">
+                            <div class="image is-32x32">
+                                <img :src="'/' + icon">
+                            </div>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <p v-text="icon"></p>
+                            </div>
+                        </div>
+                    </article>
+                </section>
+                <footer class="modal-card-foot">
+                    <figure class="image is-32x32">
+                        <div class="image is-square">
+                            <img :src="iconUploaderPreviewSrc" v-if="iconUploaderPreviewSrc">
+                        </div>
+                    </figure>
+                    <input type="file" accept="image/*" @change="onIconUploaderChange">
+                    <a class="button is-info" @click="uploadIcon">上传新图标</a>
+                </footer>
             </div>
         </div>
     </div>

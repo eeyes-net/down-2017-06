@@ -7,6 +7,8 @@ use app\common\model\DownList;
 use app\common\model\Issue;
 use app\common\model\Log;
 use app\traits\controller\CheckPermission;
+use Eeyes\Api\Permission;
+use phpCAS;
 use think\Controller;
 use think\exception\HttpResponseException;
 use think\Response;
@@ -18,39 +20,23 @@ class Index extends Controller
 
     protected $beforeActionList = [
         'checkPermission',
-        'mustLogin' => ['except' => ['index', 'login', 'logout']],
+        'mustLogin' => ['except' => ['logout']],
     ];
 
     public function mustLogin()
     {
         if (!Session::get('is_login')) {
-            $response = Response::create(['err_msg' => '请先登录'], 'json', 403);
-            throw new HttpResponseException($response);
+            init_php_cas();
+            phpCAS::forceAuthentication();
+            $username = phpCAS::getUser();
+            $result = Permission::username($username, 'website.down.admin');
+            if (!$result['can']) {
+                $response = Response::create($result['msg'], '', 403);
+                throw new HttpResponseException($response);
+            } else {
+                Session::set('is_login', true);
+            }
         }
-    }
-
-    /**
-     * 返回是否登录
-     *
-     * @return \think\response\Json
-     */
-    public function isLogin()
-    {
-        return json(true == Session::get('is_login'));
-    }
-
-    /**
-     * 登录
-     *
-     * @return \think\response\Json
-     */
-    public function login()
-    {
-        if (request()->post('password') === config('password.admin')) {
-            Session::set('is_login', true);
-            return json(true);
-        }
-        return json(false);
     }
 
     /**
@@ -61,7 +47,8 @@ class Index extends Controller
     public function logout()
     {
         Session::delete('is_login');
-        return json(true);
+        init_php_cas();
+        phpCAS::logout();
     }
 
     /**
@@ -260,7 +247,8 @@ class Index extends Controller
      *
      * @return \think\response\Json
      */
-    public function getStatsByDate() {
+    public function getStatsByDate()
+    {
         return json(Log::where('status', '200')->field('DATE(`create_time`) AS `date`, COUNT(DISTINCT `url`) AS `count`')->group('date')->order('date', 'desc')->limit(30)->select());
     }
 
@@ -269,14 +257,15 @@ class Index extends Controller
      *
      * @return \think\response\Json
      */
-    public function getStatsByFile() {
+    public function getStatsByFile()
+    {
         return json(Log::where('status', '200')->field('`file_name`, COUNT(DISTINCT `url`) AS `count`')->group('file_name')->order('count', 'desc')->select());
     }
 
     /**
      * 后台首页
      *
-     * @return \think\response\View
+     * @return \think\Response
      */
     public function index()
     {
