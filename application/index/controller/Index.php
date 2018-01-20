@@ -5,10 +5,12 @@ namespace app\index\controller;
 use app\common\model\DownList;
 use app\common\model\Issue;
 use app\common\model\Log;
+use app\common\model\Comment;
 use app\traits\controller\CheckPermission;
 use phpCAS;
 use think\Controller;
 use think\Hook;
+use think\Request;
 use think\Session;
 
 class Index extends Controller
@@ -161,6 +163,70 @@ class Index extends Controller
         return json([
             'code' => 200,
             'msg' => '提交反馈成功',
+        ]);
+    }
+
+    /**
+     * 获取评论列表
+     *
+     * @return \think\response\Json
+     */
+    public function getComment()
+    {
+        $comment = Comment::select();
+
+        $data = [];
+
+        foreach ($comment as $commentary)
+        {
+            $tmp = [
+                'id' => $commentary->id,
+                'content' => $commentary->content,
+                'time' => $commentary->create_time,
+            ];
+
+            $data[] = $tmp;
+        }
+
+        return json([
+            'code' => '200',
+            'data' => $data,
+            'msg' => 'OK',
+        ]);
+
+    }
+
+    /**
+     * 保存用户评论
+     *
+     * @return \think\response\Json
+     */
+    public function saveComment()
+    {
+        $comment = new Comment();
+
+        $comment->content = request()->post('content');
+        if (!$comment->content) {
+            return json([
+                'code' => 400,
+                'msg' => '内容不能为空',
+            ]);
+        }
+
+        init_php_cas();
+        if (phpCAS::isAuthenticated()) {
+            $comment->username = phpCAS::getUser();
+        } else {
+            return json([
+                'code' => '400',
+                'msg' => '请先登录'
+            ]);
+        }
+        $comment->save();
+        Hook::listen('comment_save');
+        return json([
+            'code' => 200,
+            'msg' => '提交评论成功',
         ]);
     }
 }
