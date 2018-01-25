@@ -34,4 +34,5 @@ Route::group('admin', function () {
     Route::get('stats/file', 'admin/Index/getStatsByFile');
     Route::get('comment/get','admin/Index/getComment');
     Route::post('comment/save','admin/Index/saveComment');
+    Route::delete('comment/:id','admin/Index/deleteComment');
 });

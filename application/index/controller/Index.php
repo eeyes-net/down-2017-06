@@ -167,33 +167,24 @@ class Index extends Controller
     }
 
     /**
-     * 获取评论列表
+     * 获得用户评论
      *
      * @return \think\response\Json
      */
     public function getComment()
     {
-        $comment = Comment::select();
+        /** 通过 CAS 取得用户 netID */
+        phpCAS::forceAuthentication();
+        $username = phpCAS::getUser();
 
-        $data = [];
-
-        foreach ($comment as $commentary)
-        {
-            $tmp = [
-                'id' => $commentary->id,
-                'content' => $commentary->content,
-                'time' => $commentary->create_time,
-            ];
-
-            $data[] = $tmp;
-        }
+        $comment = new Comment();
+        $commentary = $comment->getTree($username);
 
         return json([
             'code' => '200',
-            'data' => $data,
+            'data' => $commentary,
             'msg' => 'OK',
         ]);
-
     }
 
     /**
@@ -203,29 +194,25 @@ class Index extends Controller
      */
     public function saveComment()
     {
+        phpCAS::forceAuthentication();
+        $username = phpCAS::getUser();
+
         $comment = new Comment();
 
-        $comment->content = request()->post('content');
-        if (!$comment->content) {
+        $comment -> content = request()->post('content');
+        if(!$comment->content)
+        {
             return json([
-                'code' => 400,
+                'code' => '400',
                 'msg' => '内容不能为空',
             ]);
         }
-
-        init_php_cas();
-        if (phpCAS::isAuthenticated()) {
-            $comment->username = phpCAS::getUser();
-        } else {
-            return json([
-                'code' => '400',
-                'msg' => '请先登录'
-            ]);
-        }
-        $comment->save();
+        $comment -> root_id = request()->post('root_id');
+        $comment -> username = $username;
+        $comment -> save();
         Hook::listen('comment_save');
         return json([
-            'code' => 200,
+            'code' => '200',
             'msg' => '提交评论成功',
         ]);
     }
