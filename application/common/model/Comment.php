@@ -35,7 +35,7 @@ class Comment extends Model
 
     public function getAllTree()
     {
-        $roots = $this->where('root_id',0)->select();
+        $roots = $this->where('root_id',0)->order('create_time','desc')->select();
 
         $data = [];
         foreach ($roots as $root)
