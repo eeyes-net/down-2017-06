@@ -12,6 +12,7 @@ Route::post('comment/save','index/Index/saveComment');
 Route::group('cas', function () {
     Route::get('login', 'auth/CasLogin/login');
     Route::get('logout', 'auth/CasLogin/logout');
+    Route::get('user','auth/CasLogin/status');
 });
 
 Route::group('admin', function () {

@@ -32,4 +32,23 @@ class CasLogin extends Controller
     {
         phpCAS::logoutWithRedirectService(request()->domain() . '/');
     }
+
+    public function status()
+    {
+        if(phpCAS::isAuthenticated())
+        {
+            $username = phpCAS::getUser();
+            return json([
+                'code' => '200',
+                'status' => true,
+                'username' => $username,
+            ]);
+        } else {
+            return json([
+                'code' => '200',
+                'status' => false,
+                'username' => null,
+            ]);
+        }
+    }
 }
