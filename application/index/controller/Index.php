@@ -5,10 +5,12 @@ namespace app\index\controller;
 use app\common\model\DownList;
 use app\common\model\Issue;
 use app\common\model\Log;
+use app\common\model\Comment;
 use app\traits\controller\CheckPermission;
 use phpCAS;
 use think\Controller;
 use think\Hook;
+use think\Request;
 use think\Session;
 
 class Index extends Controller
@@ -161,6 +163,57 @@ class Index extends Controller
         return json([
             'code' => 200,
             'msg' => '提交反馈成功',
+        ]);
+    }
+
+    /**
+     * 获得用户评论
+     *
+     * @return \think\response\Json
+     */
+    public function getComment()
+    {
+        /** 通过 CAS 取得用户 netID */
+        phpCAS::forceAuthentication();
+        $username = phpCAS::getUser();
+
+        $comment = new Comment();
+        $commentary = $comment->getTree($username);
+
+        return json([
+            'code' => '200',
+            'data' => $commentary,
+            'msg' => 'OK',
+        ]);
+    }
+
+    /**
+     * 保存用户评论
+     *
+     * @return \think\response\Json
+     */
+    public function saveComment()
+    {
+        phpCAS::forceAuthentication();
+        $username = phpCAS::getUser();
+
+        $comment = new Comment();
+
+        $comment -> content = request()->post('content');
+        if(!$comment->content)
+        {
+            return json([
+                'code' => '400',
+                'msg' => '内容不能为空',
+            ]);
+        }
+        $comment -> root_id = request()->post('root_id');
+        $comment -> username = $username;
+        $comment -> save();
+        Hook::listen('comment_save');
+        return json([
+            'code' => '200',
+            'msg' => '提交评论成功',
         ]);
     }
 }
