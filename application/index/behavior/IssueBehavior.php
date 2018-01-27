@@ -2,8 +2,6 @@
 
 namespace app\index\behavior;
 
-use Eeyes\Common\Api\Eeyes\Notification;
-
 class IssueBehavior
 {
     /**
@@ -13,7 +11,6 @@ class IssueBehavior
         $content = request()->post('content');
         $name = request()->post('name');
         $contact = request()->post('contact');
-        $content = "e快下意见反馈：\n内容：{$content}\n反馈者：{$name}\n联系方式：{$contact}";
-        Notification::dingTalk($content);
+        config('hook.issue_save')($content, $name, $contact);
     }
 }

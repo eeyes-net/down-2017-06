@@ -2,7 +2,6 @@
 
 use think\Hook;
 
-Hook::add('app_init', 'app\common\behavior\AppInitBehavior');
 Hook::add('issue_save', 'app\index\behavior\IssueBehavior');
 
 return [
