@@ -6,7 +6,8 @@ var data = {
     content: '',
     name: '',
     contact: '',
-    isModalShow: false
+    isModalShow: false,
+    isLoginModalShow: false,
 };
 var vm = new Vue({
     el: '#root',
@@ -65,6 +66,12 @@ var vm = new Vue({
         },
         hideModal: function () {
             data.isModalShow = false;
+        },
+        showLoginModal: function() {
+            data.isLoginModalShow = true;
+        },
+        hideLoginModal: function () {
+            data.isLoginModalShow = false;
         },
         readableSize: function (bytes) {
             if (bytes < 1024) {
