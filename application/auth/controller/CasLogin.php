@@ -5,6 +5,7 @@ namespace app\auth\controller;
 use phpCAS;
 use think\Controller;
 use think\Request;
+use think\Env;
 
 class CasLogin extends Controller
 {
@@ -33,22 +34,19 @@ class CasLogin extends Controller
         phpCAS::logoutWithRedirectService(request()->domain() . '/');
     }
 
-    public function status()
+    public function getUser()
     {
         if(phpCAS::isAuthenticated())
         {
             $username = phpCAS::getUser();
-            return json([
-                'code' => '200',
-                'status' => true,
-                'username' => $username,
-            ]);
         } else {
-            return json([
-                'code' => '200',
-                'status' => false,
-                'username' => null,
-            ]);
+            $username = '游客';
         }
+
+        return json([
+            'code' => '200',
+            'username' => $username,
+            'msg' => 'OK',
+        ]);
     }
 }
