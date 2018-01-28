@@ -444,6 +444,82 @@ html, body {
 
 /* login end */
 
+/* comment begin */
+
+.comment {
+    background-color: #1e3c5a;
+    width: 600px;
+    height: 390px;
+    border-radius: 12px;
+}
+
+/* comment head begin */
+
+.comment-header {
+    position: absolute;
+    left: 18px;
+    top: 15px;
+    color: black;
+}
+
+/*comment head end*/
+
+/*comment body begin*/
+
+.comment-body {
+    background-color: white;
+    width: 580px;
+    height: 330px;
+    border-radius: 12px;
+    position: absolute;
+    top: 50px;
+    left: 10px;
+}
+
+.comment-body-content {
+    width: 560px;
+    height: 280px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 12px;
+    line-height: 1.5;
+}
+
+.comment-body-footer {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 5px;
+}
+
+.comment-body-footer-tips {
+    vertical-align: middle;
+    color: black;
+}
+
+.comment-body-footer-button {
+    float: right;
+    width: 120px;
+}
+
+.comment-body-footer-closebutton {
+    display: inline-block;
+    border-radius: 6px;
+    margin-right: 10px;
+    color: black;
+}
+
+.comment-body-footer-submitbutton {
+    display: inline-block;
+    border-radius: 6px;
+    color: black;
+}
+
+/* comment body end */
+
+/* comment end */
+
 /* footer begin */
 
 .my-footer {

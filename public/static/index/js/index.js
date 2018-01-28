@@ -8,6 +8,7 @@ var data = {
     contact: '',
     isModalShow: false,
     isLoginModalShow: false,
+    isCommentModalShow: false,
 };
 var vm = new Vue({
     el: '#root',
@@ -72,6 +73,12 @@ var vm = new Vue({
         },
         hideLoginModal: function () {
             data.isLoginModalShow = false;
+        },
+        showCommentModal: function() {
+            data.isCommentModalShow = true;
+        },
+        hideCommentModal: function () {
+            data.isCommentModalShow = false;
         },
         readableSize: function (bytes) {
             if (bytes < 1024) {

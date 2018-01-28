@@ -40,7 +40,7 @@
                     <a class="action-login-button button" @click="showLoginModal">登录</a>
                 </div>
                 <div class="action-comment">
-                    <a class="action-comment-button button">留言</a>
+                    <a class="action-comment-button button" @click="showCommentModal">留言</a>
                 </div>
             </div>
         </aside>
@@ -138,6 +138,25 @@
                     </section>
                 </footer>
             </div>
+        </div>
+
+        <div class="modal" :class="{'is-active': isCommentModalShow}">
+            <div class="modal-background" @click="hideCommentModal"></div>
+            <div class="comment modal-content">
+                <div class="comment-header">
+                    <p>你想给管理员说：</p>
+                </div>
+                <div class="comment-body">
+                    <textarea class="comment-body-content" placeholder="请留言..."></textarea>
+                    <div class="comment-body-footer">
+                        <span class="comment-body-footer-tips">你的建议管理大大都会认真看的哟~</span>
+                        <div class="comment-body-footer-button">
+                            <a class="comment-body-footer-closebutton button" @click="hideCommentModal">关闭</a>
+                            <a class="comment-body-footer-submitbutton button">提交</a>
+                        </div>
+                    </div>
+                </div>
+            </div>     
         </div>
 
         <div class="modal" :class="{'is-active': isModalShow}">
