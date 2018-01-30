@@ -13,9 +13,7 @@ use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 use think\exception\DbException;
 use think\Hook;
-use think\Request;
 use think\Session;
-use GuzzleHttp\Client;
 
 /**
  * Class Index
