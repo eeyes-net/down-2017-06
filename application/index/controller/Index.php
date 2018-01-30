@@ -5,12 +5,20 @@ namespace app\index\controller;
 use app\common\model\DownList;
 use app\common\model\Issue;
 use app\common\model\Log;
+use app\common\model\Comment;
 use app\traits\controller\CheckPermission;
 use phpCAS;
 use think\Controller;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\exception\DbException;
 use think\Hook;
 use think\Session;
 
+/**
+ * Class Index
+ * @package app\index\controller
+ */
 class Index extends Controller
 {
     use CheckPermission;
@@ -162,5 +170,65 @@ class Index extends Controller
             'code' => 200,
             'msg' => '提交反馈成功',
         ]);
+    }
+
+    /**
+     * 获得用户评论
+     *
+     * @return \think\response\Json
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
+     */
+    public function getComment()
+    {
+        if(isset($_SESSION['authorization'])){
+            $username = Session::get('username');
+
+            $comment = new Comment();
+            $commentary = $comment->getTree($username);
+
+            return json([
+                'code' => '200',
+                'data' => $commentary,
+                'msg' => 'OK',
+            ]);
+        } else {
+            return redirect('/oauth/login');
+        }
+    }
+
+    /**
+     * 保存用户评论
+     *
+     * @return \think\response\Json
+     */
+    public function saveComment()
+    {
+        if(isset($_SESSION['authorization']))
+        {
+            $username = Session::get('username');
+
+            $comment = new Comment();
+
+            $comment -> content = request()->post('content');
+            if(!$comment->content)
+            {
+                return json([
+                    'code' => '400',
+                    'msg' => '内容不能为空',
+                ]);
+            }
+            $comment -> root_id = request()->post('root_id');
+            $comment -> username = $username;
+            $comment -> save();
+            Hook::listen('comment_save');
+            return json([
+                'code' => '200',
+                'msg' => '提交评论成功',
+            ]);
+        } else {
+            return redirect('/oauth/login');
+        }
     }
 }

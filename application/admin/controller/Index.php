@@ -2,6 +2,7 @@
 
 namespace app\Admin\controller;
 
+use app\common\model\Comment;
 use app\common\model\DownFile;
 use app\common\model\DownList;
 use app\common\model\Issue;
@@ -281,5 +282,71 @@ class Index extends Controller
     public function index()
     {
         return view();
+    }
+
+    /**
+     * 获取所有评论
+     *
+     * @return \think\response\Json
+     */
+    public function getComment()
+    {
+        $comment = new Comment();
+        $commentary = $comment->getAllTree();
+
+        return json([
+            'code' => '200',
+            'data' => $commentary,
+            'msg' => 'OK',
+        ]);
+    }
+
+    /**
+     * 提交管理员评论
+     *
+     * @return \think\response\Json
+     */
+    public function saveComment()
+    {
+        $comment = new Comment();
+
+        $comment -> content = request()->post('content');
+        if(!$comment->content)
+        {
+            return json([
+                'code' => '400',
+                'msg' => '内容不能为空',
+            ]);
+        }
+        $comment -> root_id = request()->post('root_id');
+        $comment -> username = 'admin';
+        $comment -> save();
+        Hook::listen('comment_save');
+        return json([
+            'code' => '200',
+            'msg' => '提交评论成功',
+        ]);
+    }
+
+    /**
+     * 删除评论，若为根评论则删除所有子评论与该评论
+     *
+     * @param $id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function deleteComment($id)
+    {
+        $validation = Comment::where('id',$id)->select()['0'];
+        if($validation->root_id == 0)
+        {
+            Comment::destroy($id);
+            Comment::where('root_id',$id)->delete();
+        } else {
+            Comment::destroy($id);
+        }
+        return json(true);
     }
 }

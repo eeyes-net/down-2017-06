@@ -6,10 +6,19 @@ Route::get('/', 'index/Index/index');
 Route::get('list', 'index/Index/getDownList');
 Route::get('down/:id/:type', 'index/Index/down');
 Route::post('issue', 'index/Index/saveIssue');
+Route::get('comment/get','index/Index/getComment');
+Route::post('comment/save','index/Index/saveComment');
 
 Route::group('cas', function () {
     Route::get('login', 'auth/CasLogin/login');
     Route::get('logout', 'auth/CasLogin/logout');
+    Route::get('user','auth/CasLogin/getUser');
+});
+
+Route::group('oauth', function () {
+    Route::get('login','auth/OAuthLogin/login');
+    Route::get('logout','auth/OAuthLogin/logout');
+    Route::get('user','auth/CasLogin/getUser');
 });
 
 Route::group('admin', function () {
@@ -30,4 +39,7 @@ Route::group('admin', function () {
     Route::get('issues', 'admin/Index/getIssues');
     Route::get('stats/date', 'admin/Index/getStatsByDate');
     Route::get('stats/file', 'admin/Index/getStatsByFile');
+    Route::get('comment/get','admin/Index/getComment');
+    Route::post('comment/save','admin/Index/saveComment');
+    Route::delete('comment/:id','admin/Index/deleteComment');
 });
