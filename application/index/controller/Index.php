@@ -9,10 +9,18 @@ use app\common\model\Comment;
 use app\traits\controller\CheckPermission;
 use phpCAS;
 use think\Controller;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\exception\DbException;
 use think\Hook;
 use think\Request;
 use think\Session;
+use GuzzleHttp\Client;
 
+/**
+ * Class Index
+ * @package app\index\controller
+ */
 class Index extends Controller
 {
     use CheckPermission;
@@ -170,21 +178,26 @@ class Index extends Controller
      * 获得用户评论
      *
      * @return \think\response\Json
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function getComment()
     {
-        /** 通过 CAS 取得用户 netID */
-        phpCAS::forceAuthentication();
-        $username = phpCAS::getUser();
+        if(isset($_SESSION['authorization'])){
+            $username = Session::get('username');
 
-        $comment = new Comment();
-        $commentary = $comment->getTree($username);
+            $comment = new Comment();
+            $commentary = $comment->getTree($username);
 
-        return json([
-            'code' => '200',
-            'data' => $commentary,
-            'msg' => 'OK',
-        ]);
+            return json([
+                'code' => '200',
+                'data' => $commentary,
+                'msg' => 'OK',
+            ]);
+        } else {
+            return redirect('/oauth/login');
+        }
     }
 
     /**
@@ -194,26 +207,30 @@ class Index extends Controller
      */
     public function saveComment()
     {
-        phpCAS::forceAuthentication();
-        $username = phpCAS::getUser();
-
-        $comment = new Comment();
-
-        $comment -> content = request()->post('content');
-        if(!$comment->content)
+        if(isset($_SESSION['authorization']))
         {
+            $username = Session::get('username');
+
+            $comment = new Comment();
+
+            $comment -> content = request()->post('content');
+            if(!$comment->content)
+            {
+                return json([
+                    'code' => '400',
+                    'msg' => '内容不能为空',
+                ]);
+            }
+            $comment -> root_id = request()->post('root_id');
+            $comment -> username = $username;
+            $comment -> save();
+            Hook::listen('comment_save');
             return json([
-                'code' => '400',
-                'msg' => '内容不能为空',
+                'code' => '200',
+                'msg' => '提交评论成功',
             ]);
+        } else {
+            return redirect('/oauth/login');
         }
-        $comment -> root_id = request()->post('root_id');
-        $comment -> username = $username;
-        $comment -> save();
-        Hook::listen('comment_save');
-        return json([
-            'code' => '200',
-            'msg' => '提交评论成功',
-        ]);
     }
 }

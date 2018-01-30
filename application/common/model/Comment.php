@@ -17,6 +17,13 @@ use think\Model;
  */
 class Comment extends Model
 {
+    /**
+     * @param $username
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function getTree($username)
     {
         $roots = $this->where('root_id',0)->where('username',$username)->select();
@@ -33,6 +40,12 @@ class Comment extends Model
         return $data;
     }
 
+    /**
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function getAllTree()
     {
         $roots = $this->where('root_id',0)->order('create_time','desc')->select();
@@ -49,6 +62,13 @@ class Comment extends Model
         return $data;
     }
 
+    /**
+     * @param $root_id
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     private function getChildren($root_id)
     {
         $commentaries = $this->where('id|root_id',$root_id)->order('create_time','desc')->select();

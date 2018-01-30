@@ -29,10 +29,10 @@ class Comment extends Migrator
     public function change()
     {
       $this->table('comment', ['engine' => 'MyISAM'])
-          ->addColumn('root_id','integer',['default' => 0])
-          ->addColumn('content','text',['comment' => '评论内容'])
-          ->addColumn('username','char',['comment' => 'netID'])
-          ->addColumn('create_time', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
-          ->create();
+            ->addColumn('root_id','integer',['default' => 0])
+            ->addColumn('content','text',['comment' => '评论内容'])
+            ->addColumn('username','char',['comment' => 'netID'])
+            ->addColumn('create_time', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+            ->create();
     }
 }

@@ -69,6 +69,7 @@ class OAuthLogin extends Controller
 		    }
 
             Session::set('name',$user->getName());
+    		Session::set('username',$user->getUsername());
 
     		return redirect('/');
 	    }
