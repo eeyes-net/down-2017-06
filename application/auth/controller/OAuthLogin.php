@@ -3,54 +3,75 @@
 namespace app\auth\controller;
 
 use think\Controller;
+use think\Request;
 use think\Session;
-use GuzzleHttp\Client;
+use think\Exception;
+use think\Log;
 use app\common\model\User;
+use sxxuz\OAuth2\Client\Provider\Eeyes;
+use sxxuz\OAuth2\Client\Provider\EeyesResourceOwner;
 
 class OAuthLogin extends Controller
 {
-    public function login()
+    public function login(Request $request)
     {
-        if(!Session::has('authorization'))
-        {
-            return redirect(config('oauth.account.url') . 'oauth/authorize?' . http_build_query([
-                    'client_id' => config('oauth.account.app.ia'),
-                    'redirect_uri' => config('oauth.account.app.redirect_uri'),
-                    'response_type' => 'code',
-                    'scope' => implode(' ', [
-                        'info-username.read',
-                        'info-user_id.read',
-                        'info-name.read',
-                        'info-email.read',
-                        'info-email.write',
-                        'info-mobile.read',
-                        'info-mobile.write',
-                        'info-school.read',
-                    ]),
-                ]));
-        }
+    	$provider = new Eeyes([
+    		'clientId'       => config('oauth.app_id'),
+		    'clientSecret'   => config('oauth.app_secret'),
+		    'redirectUri'    => config('oauth.redirect_uri'),
+	    ]);
 
-        $client = new Client;
-        $response = $client->get(config('oauth.account.url') . '/api/user', [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => Session::get('authorization'),
-            ],
-        ]);
-        $data = json_decode((string)$response->getBody(), true);
-        $username = $data['username'];
+    	if($request->get('code') == null)
+	    {
+	    	$authorizationUrl = $provider->getAuthorizationUrl().'?'.http_build_query([
+	    		'client_id'     => config('oauth.app_id'),
+				'redirect_uri'  => config('oauth.redirect_uri'),
+				'response_type' => 'code',
+				'scope'         => implode(' ',[
+					'info-username.read',
+					'info-user_id.read',
+					'info-name.read',
+				]),
+			    ]);
+		    Session::set('oauth2state',$provider->getState());
+		    return redirect($authorizationUrl);
+	    } elseif ($provider->getState() == !null || $provider->getState() !== Session::get('oauth2state')) {
+    		if(isset($_SESSION['oauth2state']))
+            {
+                Session::delete('oauth2state');
+            }
+    		exit('Invalid State');
+	    } else {
+    		try{
+			    $response = $provider->getAccessToken('authorization_code',[
+				    'code' => $request->get('code'),
+			    ]);
 
-        $user = User::where('username',$username)->select();
-        if(!$user)
-        {
-            $user = new User();
-            $user -> username = $username;
-            $user -> stu_id = $data['stu_id'];
-            $user -> name = $data['name'];
-            $user -> save();
-        }
-        Session::set('name',$data['name']);
-        return redirect('/');
+			    Session::set('authorization',$response->getValues()['token_type']);
+			    Session::set('access_token',$response->getToken());
+			    Session::set('refresh_token',$response->getRefreshToken());
+
+			    $user = $provider->getResourceOwner($response);
+			    $userID = $user->getId();
+			    $result = User::where('user_id',$userID)->select();
+
+		    } catch (Exception $exception) {
+    			exit($exception->getMessage());
+		    }
+
+    		if(isset($result))
+		    {
+		    	$newUser = new User();
+		    	$newUser->user_id = $userID;
+		    	$newUser->username = $user->getUsername();
+		    	$newUser->name = $user->getName();
+		    	$newUser->save();
+		    }
+
+            Session::set('name',$user->getName());
+
+    		return redirect('/');
+	    }
     }
 
     public function logout()

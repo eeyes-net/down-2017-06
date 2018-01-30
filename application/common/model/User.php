@@ -10,7 +10,7 @@ use think\Model;
  *
  * @property string $id 用户ID
  * @property string $username 用户netID
- * @property string $stu_id 学号
+ * @property string $user_id 学号
  * @property string $name 姓名
  */
 class User extends Model
