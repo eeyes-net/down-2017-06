@@ -185,8 +185,7 @@ class Index extends Controller
         if(isset($_SESSION['authorization'])){
             $username = Session::get('username');
 
-            $comment = new Comment();
-            $commentary = $comment->getTree($username);
+            $commentary = Comment::getTree($username);
 
             return json([
                 'code' => '200',
