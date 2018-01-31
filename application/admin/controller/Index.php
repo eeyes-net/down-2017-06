@@ -291,8 +291,7 @@ class Index extends Controller
      */
     public function getComment()
     {
-        $comment = new Comment();
-        $commentary = $comment->getAllTree();
+        $commentary = Comment::getAllTree();
 
         return json([
             'code' => '200',

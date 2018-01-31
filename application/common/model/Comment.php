@@ -18,72 +18,58 @@ use think\Model;
 class Comment extends Model
 {
     /**
-     * @param $username
-     * @return array
+     * @param $username netID 
+     * @return array 某个用户的所有评论树
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function getTree($username)
+    public static function getTree($username)
     {
-        $roots = $this->where('root_id',0)->where('username',$username)->select();
-
-        $data = [];
-        foreach ($roots as $root)
-        {
-            $tmp = [
-                'root_id' => $root->id,
-                'children' => $this->getChildren($root->id),
-            ];
-            $data[] = $tmp;
+        $roots = self::where('root_id',0)->where('username',$username)->order('create_time','desc')->select();
+        foreach ($roots as $index => $root) {
+            $roots[$index] = $root->visible(['root_id'])->append(['children'])->toArray();
         }
-        return $data;
+        return $roots;
     }
 
     /**
-     * @return array
+     * @return array 所有评论树
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function getAllTree()
+    public static function getAllTree()
     {
-        $roots = $this->where('root_id',0)->order('create_time','desc')->select();
-
-        $data = [];
-        foreach ($roots as $root)
-        {
-            $tmp = [
-                'root_id' => $root->id,
-                'children' => $this->getChildren($root->id),
-            ];
-            $data[] = $tmp;
+        $roots = self::where('root_id',0)->order('create_time','desc')->select();
+        foreach ($roots as $index => $root) {
+            $roots[$index] = $root->visible(['root_id'])->append(['children'])->toArray();
         }
-        return $data;
+        return $roots;
     }
 
     /**
-     * @param $root_id
-     * @return array
+     * 获取某条根评论的所有子评论(包括本身)
+     * 若不是根评论则返回空数组
+     * @param null $value 空字段没有$value参数
+     * @param array $data 该Comment对象的其他数据
+     * @return array 所有子评论(包括本身)
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    private function getChildren($root_id)
+    public function getChildrenAttr($value, $data)
     {
-        $commentaries = $this->where('id|root_id',$root_id)->order('create_time','desc')->select();
-
-        $data = [];
-        foreach ($commentaries as $commentary)
-        {
-            $tmp = [
-                'id' => $commentary->id,
-                'username' => $commentary->username,
-                'content' => $commentary->content,
-            ];
-            $data[] = $tmp;
+        if ($data['root_id'] == 0) {
+            $children = self::where('id|root_id', $data['id'])
+                ->order('create_time', 'asc')
+                ->select();
+            foreach ($children as $index => $comment) {
+                $children[$index] = $comment->visible(['id','username','content'])->toArray();
+            }
+            return $children;
+        } else {
+            return [];
         }
-        return $data;
     }
-
 }

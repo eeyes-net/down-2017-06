@@ -106,6 +106,71 @@ html, body {
 
 /* notice end */
 
+/* action begin */
+
+.action {
+    margin-top: -80px;
+    padding: 0 12px;
+    height: 80px;
+}
+
+.action-body {
+    position: relative;
+    margin: 0 auto;
+    max-width: 1280px;
+    text-align: right;
+    font-size: 0;
+}
+
+.action-login,
+.action-comment {
+    position: absolute;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    line-height: 80px;
+    font-size: 1rem;
+}
+
+.action-login {
+    right: 24.5em;
+}
+
+.action-comment {
+    right: 20.5em;
+}
+
+.action-login-button,
+.action-comment-button {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 1em;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+}
+
+.action-search-input {
+    display: inline-block;
+    padding: 0 15px;
+    width: 100%;
+    height: 40px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+}
+
+@media screen and (max-width: 900px) {
+    .action-login {
+        right: 4.5em;
+    }
+    
+    .action-comment {
+        right: .5em;
+    }
+}
+
+/* action end */
+
 /* search begin */
 
 .search {
@@ -129,6 +194,7 @@ html, body {
 
 .search-input {
     display: inline-block;
+    vertical-align: middle;
     padding: 0 15px;
     width: 100%;
     height: 40px;
@@ -137,7 +203,7 @@ html, body {
     border: 1px solid #ccc;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
     .search {
         margin-top: 0;
         background-color: #fafafa;
@@ -313,6 +379,146 @@ html, body {
 /* main card end */
 
 /* main end */
+
+/* login begin */
+
+/* login head begin */
+
+.login-header {
+    background-color: #1f3c5a;
+}
+
+.login-header-logo {
+    display: flex;
+    display: -webkit-flex;
+    margin: 0 auto;
+    align-items: center;
+    width: 240px;
+    height: 215px;
+}
+
+.login-header-logo-img {
+    width: 240px;
+    height: 84px;
+}
+
+.login-close-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* login head end */
+
+/* login body begin */
+
+.login-body {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.login-label {
+    text-align: justify;
+}
+
+.login-label:after {
+    display: inline-block;
+    content: '';
+    padding-left: 100%;
+}
+
+.login-button {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 5px 25px;
+    width: 200px;
+    height: 50px;
+    line-height: 40px;
+    font-size: 26px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+}
+
+/* login body end */
+
+/* login end */
+
+/* comment begin */
+
+.comment {
+    background-color: #1e3c5a;
+    width: 600px;
+    height: 390px;
+    border-radius: 12px;
+}
+
+/* comment head begin */
+
+.comment-header {
+    position: absolute;
+    left: 18px;
+    top: 15px;
+    color: black;
+}
+
+/*comment head end*/
+
+/*comment body begin*/
+
+.comment-body {
+    background-color: white;
+    width: 580px;
+    height: 330px;
+    border-radius: 12px;
+    position: absolute;
+    top: 50px;
+    left: 10px;
+}
+
+.comment-body-content {
+    width: 560px;
+    height: 280px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 12px;
+    line-height: 1.5;
+}
+
+.comment-body-footer {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 5px;
+}
+
+.comment-body-footer-tips {
+    vertical-align: middle;
+    color: black;
+}
+
+.comment-body-footer-button {
+    float: right;
+    width: 120px;
+}
+
+.comment-body-footer-closebutton {
+    display: inline-block;
+    border-radius: 6px;
+    margin-right: 10px;
+    color: black;
+}
+
+.comment-body-footer-submitbutton {
+    display: inline-block;
+    border-radius: 6px;
+    color: black;
+}
+
+/* comment body end */
+
+/* comment end */
 
 /* footer begin */
 
