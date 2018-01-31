@@ -62,7 +62,7 @@ class Comment extends Model
     {
         if ($data['root_id'] == 0) {
             $children = self::where('id|root_id', $data['id'])
-                ->order('create_time', 'asc')
+                ->order('create_time', 'desc')
                 ->select();
             foreach ($children as $index => $comment) {
                 $children[$index] = $comment->visible(['id','username','content'])->toArray();

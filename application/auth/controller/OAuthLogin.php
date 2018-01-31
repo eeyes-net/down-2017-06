@@ -59,7 +59,7 @@ class OAuthLogin extends Controller
     			exit($exception->getMessage());
 		    }
 
-    		if(isset($result))
+    		if(!isset($result))
 		    {
 		    	$newUser = new User();
 		    	$newUser->user_id = $userID;
