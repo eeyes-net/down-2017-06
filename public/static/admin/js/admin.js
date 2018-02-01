@@ -255,8 +255,25 @@ var vm = new Vue({
             .then(function (response) {
                 data.issueCurrentPage = page;
                 data.issueLastPage = response.data.last_page;
-                data.issues = response.data.data;
+                // data.issues = response.data.data;
+                tdata = [
+                    'Bill',
+                    'Bob',
+                    'John'
+                ]
+                testGeneretes(tdata);
+                data.issues = tdata;
             });
+        },
+        parseComment: function (comment, name) {
+            str = '';
+            if (comment.is_admin) {
+                str += '管理员: ';
+            } else {
+                str += name + ': ';
+            }
+            str += comment.content;
+            return str;
         },
         /**
          * 页码列表
@@ -334,3 +351,20 @@ var vm = new Vue({
         }
     }
 });
+
+function testGeneretes(names) {
+    for (let i = 0; i < names.length; i++) {
+        names[i] = new testGenerate(names[i]);
+    }
+}
+
+function testGenerate(name) {
+    this.name = name;
+    this.comments = Array(3);
+    for (var i = 0; i < this.comments.length; i++) {
+        this.comments[i] = {
+            content: '这是' + name + '的第' + String(i+1) + '条评论',
+            is_admin: i % 2
+        };
+    }
+}

@@ -219,7 +219,7 @@
                                     <small v-text="issue.create_time"></small>
                                     <small>#{{ issue.id }}</small>
                                 </p>
-                                <p v-text="issue.content"></p>
+                                <p v-for="comment in issue.comments" v-text="parseComment(comment, issue.name)"></p>
                             </div>
                         </div>
                     </div>
