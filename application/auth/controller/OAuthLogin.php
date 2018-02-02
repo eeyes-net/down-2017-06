@@ -48,7 +48,7 @@ class OAuthLogin extends Controller
     public function logout()
     {
         Session::delete('user');
-        return redirect('/');
+        return redirect('https://cas.xjtu.edu.cn/logout');
     }
 
     public function getUser()
