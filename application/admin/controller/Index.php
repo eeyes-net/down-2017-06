@@ -7,6 +7,7 @@ use app\common\model\DownFile;
 use app\common\model\DownList;
 use app\common\model\Issue;
 use app\common\model\Log;
+use app\common\model\User;
 use app\traits\controller\CheckPermission;
 use think\Controller;
 use think\exception\HttpResponseException;
@@ -291,11 +292,32 @@ class Index extends Controller
      */
     public function getComment()
     {
-        $commentary = Comment::getAllTree();
+        $users = User::with('comments')->paginate(20);
+
+        $data = [];
+        foreach ($users as $user)
+        {
+            $temp = [
+                'username' => $user->username,
+                'name' => $user->username,
+            ];
+            $trees = $user->comment;
+            foreach ($trees as $tree)
+            {
+                $stick = [
+                    'id' => $tree->id,
+                    'content' => $tree->content,
+                    'is_admin' => $tree->is_admin,
+                    'create_time' => $tree->create_time,
+                ];
+                $temp[] = $stick;
+            }
+            $data[] = $temp;
+        }
 
         return json([
             'code' => '200',
-            'data' => $commentary,
+            'data' => $data,
             'msg' => 'OK',
         ]);
     }
@@ -317,8 +339,8 @@ class Index extends Controller
                 'msg' => '内容不能为空',
             ]);
         }
-        $comment -> root_id = request()->post('root_id');
-        $comment -> username = 'admin';
+        $comment -> user_id = request()->post('user_id');
+        $comment -> is_admin = true;
         $comment -> save();
         Hook::listen('comment_save');
         return json([
@@ -328,7 +350,7 @@ class Index extends Controller
     }
 
     /**
-     * 删除评论，若为根评论则删除所有子评论与该评论
+     * 删除评论
      *
      * @param $id
      * @return \think\response\Json
@@ -338,14 +360,7 @@ class Index extends Controller
      */
     public function deleteComment($id)
     {
-        $validation = Comment::where('id',$id)->select()['0'];
-        if($validation->root_id == 0)
-        {
-            Comment::destroy($id);
-            Comment::where('root_id',$id)->delete();
-        } else {
-            Comment::destroy($id);
-        }
+        Comment::destroy($id);
         return json(true);
     }
 }

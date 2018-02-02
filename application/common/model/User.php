@@ -10,10 +10,13 @@ use think\Model;
  *
  * @property string $id 用户ID
  * @property string $username 用户netID
- * @property string $user_id 学号
  * @property string $name 姓名
+ * @property array $comments
  */
 class User extends Model
 {
-    //
+    public function comments()
+    {
+        return $this->hasMany('Comment', 'user_id')->order('create_time','desc');
+    }
 }

@@ -47,29 +47,26 @@ class OAuthLogin extends Controller
 				    'code' => $request->get('code'),
 			    ]);
 
-			    Session::set('authorization',$response->getValues()['token_type']);
-			    Session::set('access_token',$response->getToken());
-			    Session::set('refresh_token',$response->getRefreshToken());
+			    Session::set('authorization',$response);
 
 			    $user = $provider->getResourceOwner($response);
-			    $userID = $user->getId();
-			    $result = User::where('user_id',$userID)->select();
+			    $username = $user->getUsername();
+			    $result = User::get(['username',$username]);
 
 		    } catch (Exception $exception) {
     			exit($exception->getMessage());
 		    }
 
-    		if(!isset($result))
+    		if(!$result)
 		    {
 		    	$newUser = new User();
-		    	$newUser->user_id = $userID;
 		    	$newUser->username = $user->getUsername();
 		    	$newUser->name = $user->getName();
 		    	$newUser->save();
-		    }
-
-            Session::set('name',$user->getName());
-    		Session::set('username',$user->getUsername());
+		    	Session::set('user',$newUser->toArray());
+		    } else {
+    		    Session::set('user',User::get(['username'=>$username]));
+            }
 
     		return redirect('/');
 	    }
