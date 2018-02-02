@@ -15,74 +15,48 @@ class OAuthLogin extends Controller
 {
     public function login(Request $request)
     {
-    	$provider = new Eeyes([
+		$scopes = [
+			'info-username.read',
+			'info-user_id.read',
+			'info-name.read',
+		];
+    	$eeyesClient = new Eeyes([
     		'clientId'       => config('oauth.app_id'),
 		    'clientSecret'   => config('oauth.app_secret'),
-		    'redirectUri'    => config('oauth.redirect_uri'),
-	    ]);
+			'redirectUri'    => config('oauth.redirect_uri'),
+			'scope'	         => $scopes,
+		]);
 
-    	if($request->get('code') == null)
-	    {
-	    	$authorizationUrl = $provider->getAuthorizationUrl().'?'.http_build_query([
-	    		'client_id'     => config('oauth.app_id'),
-				'redirect_uri'  => config('oauth.redirect_uri'),
-				'response_type' => 'code',
-				'scope'         => implode(' ',[
-					'info-username.read',
-					'info-user_id.read',
-					'info-name.read',
-				]),
-			    ]);
-		    Session::set('oauth2state',$provider->getState());
-		    return redirect($authorizationUrl);
-	    } elseif ($provider->getState() == !null || $provider->getState() !== Session::get('oauth2state')) {
-    		if(isset($_SESSION['oauth2state']))
-            {
-                Session::delete('oauth2state');
-            }
-    		exit('Invalid State');
-	    } else {
-    		try{
-			    $response = $provider->getAccessToken('authorization_code',[
-				    'code' => $request->get('code'),
-			    ]);
+		$user = $eeyesClient->getUser();
 
-			    Session::set('authorization',$response);
+		$username = $user['username'];
+		$name = $user['name'];
 
-			    $user = $provider->getResourceOwner($response);
-			    $username = $user->getUsername();
-			    $result = User::get(['username',$username]);
+		$u = User::where('username', $username)->find();
 
-		    } catch (Exception $exception) {
-    			exit($exception->getMessage());
-		    }
+		if (!$u) {
+			$u = new User();
+			$u->username = $username;
+			$u->name = $name;
+			$u->save();
+		}
 
-    		if(!$result)
-		    {
-		    	$newUser = new User();
-		    	$newUser->username = $user->getUsername();
-		    	$newUser->name = $user->getName();
-		    	$newUser->save();
-		    	Session::set('user',$newUser->toArray());
-		    } else {
-    		    Session::set('user',User::get(['username'=>$username]));
-            }
+		Session::set('user', $user);
 
-    		return redirect('/');
-	    }
+		return redirect('/');
     }
 
     public function logout()
     {
-        Session::destroy();
+        Session::delete('user');
         return redirect('/');
     }
 
     public function getUser()
     {
-        if (Session::has('name'))
+        if (Session::has('user'))
         {
-            $username = Session::get('name');
+            $username = Session::get('user')['username'];
         } else {
             $username = '游客';
         }

@@ -18,7 +18,7 @@ Route::group('cas', function () {
 Route::group('oauth', function () {
     Route::get('login','auth/OAuthLogin/login');
     Route::get('logout','auth/OAuthLogin/logout');
-    Route::get('user','auth/CasLogin/getUser');
+    Route::get('user','auth/OAuthLogin/getUser');
 });
 
 Route::group('admin', function () {
