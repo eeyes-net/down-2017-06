@@ -6,8 +6,8 @@ Route::get('/', 'index/Index/index');
 Route::get('list', 'index/Index/getDownList');
 Route::get('down/:id/:type', 'index/Index/down');
 Route::post('issue', 'index/Index/saveIssue');
-Route::get('comment/get','index/Index/getComment');
-Route::post('comment/save','index/Index/saveComment');
+Route::get('comment','index/Index/getComment');
+Route::post('comment','index/Index/saveComment');
 
 Route::group('cas', function () {
     Route::get('login', 'auth/CasLogin/login');
@@ -39,7 +39,7 @@ Route::group('admin', function () {
     Route::get('issues', 'admin/Index/getIssues');
     Route::get('stats/date', 'admin/Index/getStatsByDate');
     Route::get('stats/file', 'admin/Index/getStatsByFile');
-    Route::get('comment/get','admin/Index/getComment');
-    Route::post('comment/save','admin/Index/saveComment');
+    Route::get('comment','admin/Index/getComment');
+    Route::post('comment','admin/Index/saveComment');
     Route::delete('comment/:id','admin/Index/deleteComment');
 });

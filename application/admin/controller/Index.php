@@ -13,6 +13,7 @@ use think\Controller;
 use think\exception\HttpResponseException;
 use think\Response;
 use think\Session;
+use think\Hook;
 
 class Index extends Controller
 {
@@ -292,7 +293,9 @@ class Index extends Controller
      */
     public function getComment()
     {
-        $users = User::with('comments')->paginate(20);
+        // 获取所有评论时按照最后评论时间降序
+        // 这样能把最新评论的放在最前面
+        $users = User::with('comments')->order('last_comment_time','desc')->paginate(20);
 
         $data = [];
         foreach ($users as $user)
@@ -301,14 +304,14 @@ class Index extends Controller
                 'username' => $user->username,
                 'name' => $user->username,
             ];
-            $trees = $user->comment;
+            $trees = $user->comments;
             foreach ($trees as $tree)
             {
                 $stick = [
                     'id' => $tree->id,
                     'content' => $tree->content,
                     'is_admin' => $tree->is_admin,
-                    'create_time' => $tree->create_time,
+                    'time' => $tree->create_time,
                 ];
                 $temp[] = $stick;
             }

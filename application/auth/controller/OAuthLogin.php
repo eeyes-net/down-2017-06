@@ -29,17 +29,16 @@ class OAuthLogin extends Controller
 
 		$user = $eeyesClient->getUser();
 
-		$username = $user['username'];
-		$name = $user['name'];
-
-		$u = User::where('username', $username)->find();
+		$u = User::where('username', $user['username'])->find();
 
 		if (!$u) {
 			$u = new User();
-			$u->username = $username;
-			$u->name = $name;
+			$u->username = $user['username'];
+			$u->name = $user['name'];
 			$u->save();
 		}
+
+		$user['id'] = $u->id;
 
 		Session::set('user', $user);
 
@@ -54,9 +53,8 @@ class OAuthLogin extends Controller
 
     public function getUser()
     {
-        if (Session::has('user'))
-        {
-            $username = Session::get('user')['username'];
+        if (Session::has('user')) {
+            $username = Session::get('user')['name'];
         } else {
             $username = '游客';
         }

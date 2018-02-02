@@ -33,7 +33,7 @@ class Index extends Controller
 
     public function mustLogin()
     {
-        if(!Session::get('authorization'))
+        if(!Session::has('user'))
         {
             $response = Response::create(['err_msg' => '请先登录'], 'json', 403);
             throw new HttpResponseException($response);
@@ -195,14 +195,13 @@ class Index extends Controller
      */
     public function getComment()
     {
-        $user = Session::get('user');
-        $username = $user['username'];
+        $username = Session::get('user')['username'];
 
-        $user = User::get(['username'=>$username]);
+        $user = User::where('username', $username)->find();
 
         $data = [
               'username' => $user->username,
-              'name' => $username->name,
+              'name' => $user->name,
         ];
         $trees = $user->comments;
         foreach ($trees as $tree)
@@ -229,20 +228,24 @@ class Index extends Controller
     public function saveComment()
     {
         $user = Session::get('user');
-        $username = $user['username'];
-        $user_id = $user['id'];
+
+        $content = request()->post('content');
+
+        if (strlen($content) < 1) {
+            $response = Response::create(['err_msg' => '内容不能为空'], 'json', 400);
+            throw new HttpResponseException($response);
+        }
 
         $comment = new Comment();
-        $comment->content = request()->post('content');
-        if (!isset($comment->content))
-        {
-            return json([
-                'code' => '400',
-                'msg' => '内容不能为空',
-            ]);
-        }
-        $comment->user_id = $user_id;
-        $comment->username = $username;
+        $comment->user_id = $user['id'];
+        $comment->content = $content;
+        $comment->is_admin = false;
+        $comment->save();
 
+        return json([
+            'code' => '200',
+            'data' => $comment->visible(['id'])->toArray(),
+            'msg' => 'OK',
+        ]);
     }
 }
