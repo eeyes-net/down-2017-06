@@ -6,14 +6,17 @@ use app\common\model\DownList;
 use app\common\model\Issue;
 use app\common\model\Log;
 use app\common\model\Comment;
+use app\common\model\User;
 use app\traits\controller\CheckPermission;
 use phpCAS;
 use think\Controller;
+use think\exception\HttpResponseException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 use think\exception\DbException;
 use think\Hook;
 use think\Session;
+use think\Response;
 
 /**
  * Class Index
@@ -25,7 +28,17 @@ class Index extends Controller
 
     protected $beforeActionList = [
         'checkPermission' => ['except' => ['index']],
+        'mustLogin'       => ['only' => ['getComment','saveComment']],
     ];
+
+    public function mustLogin()
+    {
+        if(!Session::get('authorization'))
+        {
+            $response = Response::create(['err_msg' => '请先登录'], 'json', 403);
+            throw new HttpResponseException($response);
+        }
+    }
 
     /**
      * 直接返回主页HTML
@@ -173,28 +186,39 @@ class Index extends Controller
     }
 
     /**
-     * 获得用户评论
+     * 获取用户评论
      *
      * @return \think\response\Json
      * @throws DataNotFoundException
-     * @throws ModelNotFoundException
      * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function getComment()
     {
-        if(isset($_SESSION['authorization'])){
-            $username = Session::get('username');
+        $user = Session::get('user');
+        $username = $user['username'];
 
-            $commentary = Comment::getTree($username);
+        $user = User::get(['username'=>$username]);
 
-            return json([
-                'code' => '200',
-                'data' => $commentary,
-                'msg' => 'OK',
-            ]);
-        } else {
-            return redirect('/oauth/login');
+        $data = [
+              'username' => $user->username,
+              'name' => $username->name,
+        ];
+        $trees = $user->comments;
+        foreach ($trees as $tree)
+        {
+            $tmp = [
+                'content' => $tree->content,
+                'is_admin' => $tree->is_admin,
+                'create_time' => $tree->create_time,
+            ];
+            $data['comment'][] = $tmp;
         }
+        return json([
+            'code' => '200',
+            'data' => $data,
+            'msg' => 'OK',
+        ]);
     }
 
     /**
@@ -204,30 +228,21 @@ class Index extends Controller
      */
     public function saveComment()
     {
-        if(isset($_SESSION['authorization']))
+        $user = Session::get('user');
+        $username = $user['username'];
+        $user_id = $user['id'];
+
+        $comment = new Comment();
+        $comment->content = request()->post('content');
+        if (!isset($comment->content))
         {
-            $username = Session::get('username');
-
-            $comment = new Comment();
-
-            $comment -> content = request()->post('content');
-            if(!$comment->content)
-            {
-                return json([
-                    'code' => '400',
-                    'msg' => '内容不能为空',
-                ]);
-            }
-            $comment -> root_id = request()->post('root_id');
-            $comment -> username = $username;
-            $comment -> save();
-            Hook::listen('comment_save');
             return json([
-                'code' => '200',
-                'msg' => '提交评论成功',
+                'code' => '400',
+                'msg' => '内容不能为空',
             ]);
-        } else {
-            return redirect('/oauth/login');
         }
+        $comment->user_id = $user_id;
+        $comment->username = $username;
+
     }
 }

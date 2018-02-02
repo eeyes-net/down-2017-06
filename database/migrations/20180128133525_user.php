@@ -30,7 +30,6 @@ class User extends Migrator
     {
         $this->table('user',['engine' => 'MyISAM'])
             ->addColumn('username','string',['comment' => 'netID'])
-            ->addColumn('user_id','text',['comment' => '学号'])
             ->addColumn('name','text',['comment' => '姓名'])
             ->create();
     }
