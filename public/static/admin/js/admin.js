@@ -278,6 +278,24 @@ var vm = new Vue({
                 data.comments = response.data.data;
             });
         },
+        saveComment: function (user_id, content) {
+            if (undefined === content) {
+                alert('请先输入内容');
+                return;
+            }
+            axios({
+                method: 'post',
+                url: '/admin/comment',
+                data: {
+                    user_id: user_id,
+                    content: content
+                },
+                responseType: 'json'
+            }).then(function(response) {
+                alert(response.data.msg);
+                vm.getComments(data.commentCurrentPage);
+            });
+        },
         parseComment: function (comment, name) {
             str = '';
             if (comment.is_admin) {

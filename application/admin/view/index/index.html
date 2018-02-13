@@ -254,6 +254,14 @@
                                     <p v-text="parseComment(line, comment.name)"></p>
                                 </div>
                             </div>
+                            <div class="comment-submit">
+                                <div class="comment-submit-input">
+                                    <input class="input" v-model="comment.submit">
+                                </div>
+                                <div class="comment-submit-button">
+                                    <a class="button" @click="saveComment(comment.id, comment.submit)">提交</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
