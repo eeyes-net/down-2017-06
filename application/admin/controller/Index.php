@@ -295,34 +295,15 @@ class Index extends Controller
     {
         // 获取所有评论时按照最后评论时间降序
         // 这样能把最新评论的放在最前面
-        $users = User::with('comments')->order('last_comment_time','desc')->paginate(20);
-
-        $data = [];
-        foreach ($users as $user)
-        {
-            $temp = [
-                'username' => $user->username,
-                'name' => $user->username,
-            ];
-            $trees = $user->comments;
-            foreach ($trees as $tree)
-            {
-                $stick = [
-                    'id' => $tree->id,
-                    'content' => $tree->content,
-                    'is_admin' => $tree->is_admin,
-                    'time' => $tree->create_time,
-                ];
-                $temp[] = $stick;
+        $paginator = User::with('comments')->order('last_comment_time','desc')->paginate(20);
+        // 过滤多余数据
+        $data = $paginator->each(function($item, $key) {
+            $item->visible(['username', 'name', 'comments']);
+            foreach ($item->comments as $comment) {
+                $comment->visible(['id', 'content', 'is_admin', 'create_time']);
             }
-            $data[] = $temp;
-        }
-
-        return json([
-            'code' => '200',
-            'data' => $data,
-            'msg' => 'OK',
-        ]);
+        });
+        return json($data);
     }
 
     /**
