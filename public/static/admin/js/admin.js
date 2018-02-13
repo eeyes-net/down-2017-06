@@ -6,6 +6,7 @@ var data = {
         downList: false,
         downListSort: false,
         issue: false,
+        comment: false,
         stats: false,
         logout: false
     },
@@ -16,6 +17,9 @@ var data = {
     issues: [],
     issueCurrentPage: 1,
     issueLastPage: 1,
+    comments: [],
+    commentCurrentPage: 1,
+    commentLastPage: 1,
     statsByDate: [],
     statsByFile: [],
     isModalIconsShow: false,
@@ -103,6 +107,7 @@ var vm = new Vue({
                 data.icons = response.data;
             });
             this.getIssues(1);
+            this.getComments(1);
             axios({
                 method: 'get',
                 url: '/admin/stats/date',
@@ -255,14 +260,22 @@ var vm = new Vue({
             .then(function (response) {
                 data.issueCurrentPage = page;
                 data.issueLastPage = response.data.last_page;
-                // data.issues = response.data.data;
-                tdata = [
-                    'Bill',
-                    'Bob',
-                    'John'
-                ]
-                testGeneretes(tdata);
-                data.issues = tdata;
+                data.issues = response.data.data;
+            });
+        },
+        getComments: function (page) {
+            axios({
+                method: 'get',
+                url: '/admin/comment',
+                params: {
+                    page: page
+                },
+                responseType: 'json'
+            })
+            .then(function (response) {
+                data.commentCurrentPage = page;
+                data.commentLastPage = response.data.last_page;
+                data.comments = response.data.data;
             });
         },
         parseComment: function (comment, name) {
@@ -281,9 +294,7 @@ var vm = new Vue({
          * @link https://gist.github.com/kottenator/9d936eb3e4e3c3e02598
          * @return {Array}
          */
-        issuePageList: function () {
-            var current = this.issueCurrentPage;
-            var last = this.issueLastPage;
+        generatePageList: function (current, last) {
             var delta = 2;
             var left = current - delta;
             var right = current + delta;
@@ -322,6 +333,16 @@ var vm = new Vue({
             }
             return result;
         },
+        issuePageList: function () {
+            var current = this.issueCurrentPage;
+            var last = this.issueLastPage;
+            return this.generatePageList(current, last);
+        },
+        commentPageList: function () {
+            var current = this.commentCurrentPage;
+            var last = this.commentLastPage;
+            return this.generatePageList(current, last);
+        },
         selectIssuePage: function (page) {
             if (page === '+1') {
                 if (this.issueCurrentPage + 1 <= this.issueLastPage) {
@@ -333,6 +354,19 @@ var vm = new Vue({
                 }
             } else {
                 this.getIssues(parseInt(page))
+            }
+        },
+        selectCommentPage: function (page) {
+            if (page === '+1') {
+                if (this.commentCurrentPage + 1 <= this.commentLastPage) {
+                    this.getComments(this.commentCurrentPage + 1)
+                }
+            } else if (page === '-1') {
+                if (this.commentCurrentPage - 1 >= 1) {
+                    this.getComments(this.commentCurrentPage - 1)
+                }
+            } else {
+                this.getComments(parseInt(page))
             }
         }
     },
@@ -351,20 +385,3 @@ var vm = new Vue({
         }
     }
 });
-
-function testGeneretes(names) {
-    for (let i = 0; i < names.length; i++) {
-        names[i] = new testGenerate(names[i]);
-    }
-}
-
-function testGenerate(name) {
-    this.name = name;
-    this.comments = Array(3);
-    for (var i = 0; i < this.comments.length; i++) {
-        this.comments[i] = {
-            content: '这是' + name + '的第' + String(i+1) + '条评论',
-            is_admin: i % 2
-        };
-    }
-}

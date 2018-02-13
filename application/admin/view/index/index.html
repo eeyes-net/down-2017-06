@@ -31,6 +31,7 @@
                     <li :class="{'is-active': tabsActive.downList}"><a @click="changeTab('downList')">软件管理</a></li>
                     <li :class="{'is-active': tabsActive.downListSort}"><a @click="changeTab('downListSort')">软件排序</a></li>
                     <li :class="{'is-active': tabsActive.issue}"><a @click="changeTab('issue')">意见反馈</a></li>
+                    <li :class="{'is-active': tabsActive.comment}"><a @click="changeTab('comment')">评论回复</a></li>
                     <li :class="{'is-active': tabsActive.stats}"><a @click="changeTab('stats')">下载统计</a></li>
                     <li :class="{'is-active': tabsActive.logout}"><a @click="changeTab('logout')">退出登录</a></li>
                 </ul>
@@ -219,7 +220,39 @@
                                     <small v-text="issue.create_time"></small>
                                     <small>#{{ issue.id }}</small>
                                 </p>
-                                <p v-for="comment in issue.comments" v-text="parseComment(comment, issue.name)"></p>
+                                <p v-text="issue.content"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container" v-show="tabsActive.comment">
+                <div class="columns">
+                    <div class="column">
+                        <nav class="pagination">
+                            <a class="pagination-previous" @click="selectCommentPage('-1')">上一页</a>
+                            <a class="pagination-next" @click="selectCommentPage('+1')">下一页</a>
+                            <ul class="pagination-list">
+                                <li v-for="page in commentPageList()">
+                                    <span v-if="page.paginationEllipsis" class="pagination-ellipsis">&hellip;</span>
+                                    <a v-else class="pagination-link" :class="{'is-current': page.isCurrent}" v-text="page.page" @click="selectCommentPage(page.page)"></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="columns is-multiline">
+                    <div class="column is-6" v-for="comment in comments">
+                        <div class="box">
+                            <div class="content">
+                                <p>
+                                    <strong v-text="comment.name"></strong>
+                                    <small v-text="comment.last_comment_time"></small>
+                                </p>
+                                <div v-for="line in comment.comments">
+                                    <small v-text="line.create_time"></small>
+                                    <p v-text="parseComment(line, comment.name)"></p>
+                                </div>
                             </div>
                         </div>
                     </div>

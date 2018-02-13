@@ -298,7 +298,7 @@ class Index extends Controller
         $paginator = User::with('comments')->order('last_comment_time','desc')->paginate(20);
         // 过滤多余数据
         $data = $paginator->each(function($item, $key) {
-            $item->visible(['username', 'name', 'comments']);
+            $item->visible(['username', 'name', 'comments', 'last_comment_time']);
             foreach ($item->comments as $comment) {
                 $comment->visible(['id', 'content', 'is_admin', 'create_time']);
             }
