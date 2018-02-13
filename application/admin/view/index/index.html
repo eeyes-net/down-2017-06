@@ -242,7 +242,7 @@
                     </div>
                 </div>
                 <div class="columns is-multiline">
-                    <div class="column is-6" v-for="comment in comments">
+                    <div class="column is-4" v-for="comment in comments">
                         <div class="box">
                             <div class="content">
                                 <p>
@@ -251,7 +251,10 @@
                                 </p>
                                 <div v-for="line in comment.comments">
                                     <small v-text="line.create_time"></small>
-                                    <p v-text="parseComment(line, comment.name)"></p>
+                                    <p>
+                                        <span v-text="parseComment(line, comment.name)"></span>
+                                        <a class="comment-delete" @click="deleteComment(line.id)">删除</a>
+                                    </p>
                                 </div>
                             </div>
                             <div class="comment-submit">

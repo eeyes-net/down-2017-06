@@ -296,6 +296,19 @@ var vm = new Vue({
                 vm.getComments(data.commentCurrentPage);
             });
         },
+        deleteComment: function (id) {
+            axios({
+                method: 'delete',
+                url: '/admin/comment/' + id,
+            }).then(function(response) {
+                if (response.data) {
+                    alert('成功');
+                } else {
+                    alert('失败');
+                }
+                vm.getComments(data.commentCurrentPage);
+            });
+        },
         parseComment: function (comment, name) {
             str = '';
             if (comment.is_admin) {

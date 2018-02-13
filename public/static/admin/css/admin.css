@@ -53,6 +53,10 @@
 
 /* comment begin */
 
+.comment-delete {
+    float: right;
+}
+
 .comment-submit {
     position: relative;
     width: 100%;
