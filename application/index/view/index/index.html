@@ -37,7 +37,7 @@
         <aside class="action">
             <div class="action-body">
                 <div class="action-login">
-                    <a class="action-login-button button" @click="showLoginModal">登录</a>
+                    <a class="action-login-button button" onclick="location.href='/oauth/login'">登录</a>
                 </div>
                 <div class="action-comment">
                     <a class="action-comment-button button" @click="showCommentModal">留言</a>
@@ -94,51 +94,6 @@
         <footer class="my-footer">
             <div class="my-footer-box" @click="showModal">如果有其他需要的软件，点击这里向我们反馈</div>
         </footer>
-        
-        <div class="modal" :class="{'is-active': isLoginModalShow}">
-            <div class="modal-background" @click="hideLoginModal"></div>
-            <div class="login modal-card">
-                <header class="login-header modal-card-head">
-                    <div class="login-header-logo">
-                        <img class="login-header-logo-img" src="/static/index/images/logo_login.png" alt="">
-                    </div>
-                    <div class="login-close-container">
-                        <button class="delete" @click="hideLoginModal"></button>
-                    </div>
-                </header>
-                <footer class="modal-card-foot">
-                    <section class="login-body">
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="login-label label">账号</label>
-                            </div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <div class="control">
-                                        <input class="input" type="text" placeholder="NetID">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field is-horizontal">
-                            <div class="field-label is-normal">
-                                <label class="login-label label">密码</label>
-                            </div>
-                            <div class="field-body">
-                                <div class="field">
-                                    <div class="control">
-                                        <input class="input" type="password" placeholder="密码">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field is-horizontal">
-                            <a class="login-button button">登录</a>
-                        </div>
-                    </section>
-                </footer>
-            </div>
-        </div>
 
         <div class="modal" :class="{'is-active': isCommentModalShow}">
             <div class="modal-background" @click="hideCommentModal"></div>
