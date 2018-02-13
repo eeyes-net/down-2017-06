@@ -297,6 +297,9 @@ var vm = new Vue({
             });
         },
         deleteComment: function (id) {
+            if (!confirm("删除是不可恢复的，你确认要删除吗？")) {
+                return;
+            }
             axios({
                 method: 'delete',
                 url: '/admin/comment/' + id,
