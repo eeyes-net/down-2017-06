@@ -7,7 +7,6 @@ var data = {
     name: '',
     contact: '',
     isModalShow: false,
-    isLoginModalShow: false,
     isCommentModalShow: false,
 };
 var vm = new Vue({
@@ -67,12 +66,6 @@ var vm = new Vue({
         },
         hideModal: function () {
             data.isModalShow = false;
-        },
-        showLoginModal: function() {
-            data.isLoginModalShow = true;
-        },
-        hideLoginModal: function () {
-            data.isLoginModalShow = false;
         },
         showCommentModal: function() {
             data.isCommentModalShow = true;
