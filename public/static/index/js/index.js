@@ -3,12 +3,13 @@ var data = {
     greeting: '',
     search: '',
     downList: [],
+    comments: [],
+    reply: '',
     errMsg: '',
     errMsgLink: '',
     content: '',
     name: '',
     contact: '',
-    isModalShow: false,
     isCommentModalShow: false,
 };
 var vm = new Vue({
@@ -17,6 +18,7 @@ var vm = new Vue({
     mounted: function () {
         this.getList();
         this.getUserInfo();
+        this.getComments();
     },
     computed: {
         searchDownList: function () {
@@ -57,28 +59,43 @@ var vm = new Vue({
                 }
             });
         },
-        saveIssue: function () {
+        getComments: function () {
             axios({
-                method: 'post',
-                url: '/issue/',
-                data: {
-                    content: data.content,
-                    name: data.name,
-                    contact: data.contact
-                }
+                method: 'get',
+                url: '/comment',
             })
             .then(function (response) {
-                alert(response.data.msg);
                 if (response.data.code === 200) {
-                    vm.hideModal();
+                    data.comments = response.data.data.comment;
+                } else {
+                    data.comments = [];
                 }
             });
         },
-        showModal: function () {
-            data.isModalShow = true;
+        parseComment: function (comment) {
+            if (comment.is_admin) {
+                return '管理员: ' + comment.content;
+            } else {
+                return '我: ' + comment.content;
+            }
         },
-        hideModal: function () {
-            data.isModalShow = false;
+        saveComment: function () {
+            axios({
+                method: 'post',
+                url: '/comment',
+                data: {
+                    content: data.reply
+                }
+            })
+            .then(function (response) {
+                if (response.data.code === 200) {
+                    alert('提交评论成功！');
+                    vm.getComments();
+                    data.reply = '';
+                } else {
+                    alert('失败：' + response.data.err_msg);
+                }
+            });
         },
         showCommentModal: function() {
             data.isCommentModalShow = true;

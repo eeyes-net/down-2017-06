@@ -214,7 +214,7 @@ class Index extends Controller
             $data['comment'][] = $tmp;
         }
         return json([
-            'code' => '200',
+            'code' => 200,
             'data' => $data,
             'msg' => 'OK',
         ]);
@@ -243,7 +243,7 @@ class Index extends Controller
         $comment->save();
 
         return json([
-            'code' => '200',
+            'code' => 200,
             'data' => $comment->visible(['id'])->toArray(),
             'msg' => 'OK',
         ]);

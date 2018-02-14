@@ -88,85 +88,28 @@
         </main>
 
         <footer class="my-footer">
-            <div class="my-footer-box" @click="showModal">如果有其他需要的软件，点击这里向我们反馈</div>
+            <div class="my-footer-box" @click="showCommentModal">如果有其他需要的软件，点击这里向我们反馈</div>
         </footer>
 
         <div class="modal" :class="{'is-active': isCommentModalShow}">
             <div class="modal-background" @click="hideCommentModal"></div>
             <div class="comment modal-content">
-                <div class="comment-header">
-                    <p>你想给管理员说：</p>
-                </div>
+                <p class="comment-header noselect">你想给管理员说：</p>
                 <div class="comment-body">
-                    <textarea class="comment-body-content" placeholder="请留言..."></textarea>
-                    <div class="comment-body-footer">
-                        <span class="comment-body-footer-tips">你的建议管理大大都会认真看的哟~</span>
-                        <div class="comment-body-footer-button">
-                            <a class="comment-body-footer-closebutton button" @click="hideCommentModal">关闭</a>
-                            <a class="comment-body-footer-submitbutton button">提交</a>
-                        </div>
+                    <div class="comment-formerly" v-if="comments.length !== 0">
+                        <p v-for="comment in comments" v-text="parseComment(comment)"></p>
+                    </div>
+                    <div class="comment-content">
+                        <textarea placeholder="请留言..." v-model="reply"></textarea>
+                    </div>
+                    <p class="comment-footer-text noselect">你的建议管理大大都会认真看的哟~</p>
+                    <div class="comment-footer-button-container">
+                        <a class="button" @click="hideCommentModal">关闭</a>
+                        <a class="button" @click="saveComment">提交</a>
                     </div>
                 </div>
             </div>     
         </div>
-
-        <div class="modal" :class="{'is-active': isModalShow}">
-            <div class="modal-background" @click="hideModal"></div>
-            <div class="modal-content">
-                <div class="box">
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">反馈内容</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <textarea class="textarea" v-model="content"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">您的称呼</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input" type="text" placeholder="(选填)" v-model="name">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">您的联系方式</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input" type="text" placeholder="(选填，邮箱、电话、QQ均可)" v-model="contact">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <!-- Left empty for spacing -->
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <a class="button is-success" @click="saveIssue"><span>提交</span></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="modal-close" @click="hideModal"></button>
-        </div>
-    </div>
 
     {include file="common@common/eeyes_common_footer" /}
 

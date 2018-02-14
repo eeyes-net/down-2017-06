@@ -10,6 +10,15 @@ html, body {
     font-family: "PingFang SC", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", sans-serif;
 }
 
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently not supported by any browser */
+}
+
 /* header begin */
 
 .header {
@@ -351,71 +360,59 @@ html, body {
 .comment {
     background-color: #1e3c5a;
     width: 600px;
-    height: 390px;
     border-radius: 12px;
 }
-
-/* comment head begin */
 
 .comment-header {
-    position: absolute;
-    left: 18px;
-    top: 15px;
-    color: black;
+    padding: 0 24px;
+    height: 50px;
+    line-height: 50px;
+    color: #fff;
 }
 
-/*comment head end*/
-
-/*comment body begin*/
+/* comment body begin */
 
 .comment-body {
-    background-color: white;
-    width: 580px;
-    height: 330px;
+    margin: 0 12px 12px;
+    padding: 12px;
+    background-color: #fff;
     border-radius: 12px;
-    position: absolute;
-    top: 50px;
-    left: 10px;
 }
 
-.comment-body-content {
-    width: 560px;
-    height: 280px;
-    position: absolute;
-    top: 10px;
-    left: 10px;
+.comment-formerly {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background-color: #fff;
     border-radius: 12px;
-    line-height: 1.5;
+    border: 1px solid #aaa;
 }
 
-.comment-body-footer {
-    position: absolute;
-    left: 10px;
-    right: 10px;
-    bottom: 5px;
+.comment-formerly p {
+    margin: 4px 0;
 }
 
-.comment-body-footer-tips {
-    vertical-align: middle;
-    color: black;
+.comment-content {
+    margin-bottom: 12px;
+    height: 120px;
 }
 
-.comment-body-footer-button {
-    float: right;
-    width: 120px;
+.comment-content textarea {
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    resize: none;
 }
 
-.comment-body-footer-closebutton {
-    display: inline-block;
-    border-radius: 6px;
-    margin-right: 10px;
-    color: black;
+.comment-footer-text {
+    height: 32px;
+    line-height: 32px;
 }
 
-.comment-body-footer-submitbutton {
-    display: inline-block;
-    border-radius: 6px;
-    color: black;
+.comment-footer-button-container {
+    margin-top: -32px;
+    height: 32px;
+    text-align: right;
 }
 
 /* comment body end */

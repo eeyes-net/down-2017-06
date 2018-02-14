@@ -329,14 +329,11 @@ var vm = new Vue({
             });
         },
         parseComment: function (comment, name) {
-            str = '';
             if (comment.is_admin) {
-                str += '管理员: ';
+                return '管理员: ' + comment.content;
             } else {
-                str += name + ': ';
+                return name + ': ' + comment.content;
             }
-            str += comment.content;
-            return str;
         },
         /**
          * 页码列表
