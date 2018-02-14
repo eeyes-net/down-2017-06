@@ -242,27 +242,28 @@
                     </div>
                 </div>
                 <div class="columns is-multiline">
-                    <div class="column is-4" v-for="comment in comments">
+                    <div class="column is-4" v-for="group in comments">
                         <div class="box">
                             <div class="content">
+                                <button class="delete" @click="deleteComments(group)"></button>
                                 <p>
-                                    <strong v-text="comment.name"></strong>
-                                    <small v-text="comment.last_comment_time"></small>
+                                    <strong v-text="group.name"></strong>
+                                    <small v-text="group.last_comment_time"></small>
                                 </p>
-                                <div v-for="line in comment.comments">
-                                    <small v-text="line.create_time"></small>
+                                <div v-for="comment in group.comments">
+                                    <small v-text="comment.create_time"></small>
                                     <p>
-                                        <span v-text="parseComment(line, comment.name)"></span>
-                                        <a class="comment-delete" @click="deleteComment(line.id)">删除</a>
+                                        <span v-text="parseComment(comment, group.name)"></span>
+                                        <a class="comment-delete" @click="deleteComment(comment.id)">删除</a>
                                     </p>
                                 </div>
                             </div>
                             <div class="comment-submit">
                                 <div class="comment-submit-input">
-                                    <input class="input" v-model="comment.submit">
+                                    <input class="input" v-model="group.submit">
                                 </div>
                                 <div class="comment-submit-button">
-                                    <a class="button" @click="saveComment(comment.id, comment.submit)">提交</a>
+                                    <a class="button" @click="saveComment(group.id, group.submit)">提交</a>
                                 </div>
                             </div>
                         </div>

@@ -42,4 +42,5 @@ Route::group('admin', function () {
     Route::get('comment','admin/Index/getComment');
     Route::post('comment','admin/Index/saveComment');
     Route::delete('comment/:id','admin/Index/deleteComment');
+    Route::delete('comments/:user_id','admin/Index/deleteCommentsByUserID');
 });

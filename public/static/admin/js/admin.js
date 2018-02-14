@@ -296,13 +296,29 @@ var vm = new Vue({
                 vm.getComments(data.commentCurrentPage);
             });
         },
-        deleteComment: function (id) {
-            if (!confirm("删除是不可恢复的，你确认要删除吗？")) {
+        deleteComment: function (id, alarm = true) {
+            if (alarm && !confirm("删除是不可恢复的，你确认要删除吗？")) {
                 return;
             }
             axios({
                 method: 'delete',
                 url: '/admin/comment/' + id,
+            }).then(function(response) {
+                if (response.data) {
+                    alert('成功');
+                } else {
+                    alert('失败');
+                }
+                vm.getComments(data.commentCurrentPage);
+            });
+        },
+        deleteComments: function (group, alarm = true) {
+            if (alarm && !confirm("删除是不可恢复的，你确认要删除所有对话吗？")) {
+                return;
+            }
+            axios({
+                method: 'delete',
+                url: '/admin/comments/' + group.id,
             }).then(function(response) {
                 if (response.data) {
                     alert('成功');

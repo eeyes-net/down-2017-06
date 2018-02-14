@@ -295,7 +295,7 @@ class Index extends Controller
     {
         // 获取所有评论时按照最后评论时间降序
         // 这样能把最新评论的放在最前面
-        $paginator = User::with('comments')->order('last_comment_time','desc')->paginate(20);
+        $paginator = User::with('comments')->order('last_comment_time','desc')->paginate(21);
         // 过滤多余数据
         $data = $paginator->each(function($item, $key) {
             $item->visible(['id', 'name', 'comments', 'last_comment_time']);
@@ -345,6 +345,21 @@ class Index extends Controller
     public function deleteComment($id)
     {
         Comment::destroy($id);
+        return json(true);
+    }
+
+    /**
+     * 根据user_id删除某用户的所有评论
+     *
+     * @param $user_id 该用户的id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function deleteCommentsByUserID($user_id)
+    {
+        Comment::where('user_id', '=', $user_id)->delete();
         return json(true);
     }
 }

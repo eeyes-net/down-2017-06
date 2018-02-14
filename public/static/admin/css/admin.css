@@ -53,6 +53,15 @@
 
 /* comment begin */
 
+.content {
+    position: relative;
+}
+
+.content .delete {
+    position: absolute;
+    right: 0;
+}
+
 .comment-delete {
     float: right;
 }
