@@ -22,40 +22,32 @@
         </div>
     </header>
 
-    <aside class="notice">
-        <div class="notice-body">
-            <div class="notice-icon">
-                <img class="notice-icon-img" src="/static/index/images/icon_notice.png" alt="提示图标">
-            </div>
-            <div class="notice-text-container">
-                <p class="notice-text">提示：校园网下载，不消耗校园网流量 (无需登录校园网即可访问)</p>
-            </div>
-        </div>
-    </aside>
-
     <div id="root">
-        <aside class="action">
-            <div class="action-body">
-                <p v-text="greeting"></p>
-                <div class="action-login">
-                    <a class="action-login-button button" v-show="!isLogin" onclick="location.href='/oauth/login'">登录</a>
+        <nav class="navigator">
+            <aside class="notice">
+                <div class="notice-icon">
+                    <img class="notice-icon-img" src="/static/index/images/icon_notice.png" alt="提示图标">
                 </div>
-                <div class="action-logout">
-                    <a class="action-logout-button button" v-show="isLogin" onclick="location.href='/oauth/logout'">登出</a>
+                <div class="notice-text-container">
+                    <p class="notice-text">提示：校园网下载，不消耗校园网流量 (无需登录校园网即可访问)</p>
                 </div>
-                <div class="action-comment">
-                    <a class="action-comment-button button" @click="showCommentModal">留言</a>
+            </aside>
+            <aside class="action">
+                <p class="action-greeting" v-text="greeting"></p>
+                <div class="action-button">
+                    <a class="button" v-show="!isLogin" onclick="location.href='/oauth/login'">登录</a>
                 </div>
-            </div>
-        </aside>
-
-        <aside class="search">
-            <div class="search-body">
-                <div class="search-text-container">
-                    <input type="text" class="search-input" placeholder="软件筛选" v-model="search">
+                <div class="action-button">
+                    <a class="button" v-show="isLogin" onclick="location.href='/oauth/logout'">登出</a>
                 </div>
-            </div>
-        </aside>
+                <div class="action-button">
+                    <a class="button" @click="showCommentModal">留言</a>
+                </div>
+                <div class="action-search">
+                    <input type="text" class="action-search-input" placeholder="软件筛选" v-model="search">
+                </div>
+            </aside>
+        </nav>
 
         <main class="main">
             <div class="main-body">
