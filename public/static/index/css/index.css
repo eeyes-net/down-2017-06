@@ -166,6 +166,7 @@ html, body {
     }
     
     .action-search-input {
+        margin-left: 0;
         width: 100%;
     }
 }
