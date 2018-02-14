@@ -54,13 +54,15 @@ class OAuthLogin extends Controller
     public function getUser()
     {
         if (Session::has('user')) {
+			$code = 200;
             $username = Session::get('user')['name'];
         } else {
+			$code = 403;
             $username = '游客';
         }
 
         return json([
-            'code' => '200',
+            'code' => $code,
             'username' => $username,
             'msg' => 'OK',
         ]);

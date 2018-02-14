@@ -1,4 +1,6 @@
 var data = {
+    isLogin: false,
+    greeting: '',
     search: '',
     downList: [],
     errMsg: '',
@@ -14,6 +16,7 @@ var vm = new Vue({
     data: data,
     mounted: function () {
         this.getList();
+        this.getUserInfo();
     },
     computed: {
         searchDownList: function () {
@@ -29,6 +32,16 @@ var vm = new Vue({
         }
     },
     methods: {
+        getUserInfo: function () {
+            axios({
+                method: 'get',
+                url: '/oauth/user',
+            })
+            .then(function (response) {
+                data.isLogin = response.data.code === 200;
+                data.greeting = '你好，' + response.data.username;
+            });
+        },
         getList: function () {
             axios({
                 method: 'get',

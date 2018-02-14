@@ -36,8 +36,12 @@
     <div id="root">
         <aside class="action">
             <div class="action-body">
+                <p v-text="greeting"></p>
                 <div class="action-login">
-                    <a class="action-login-button button" onclick="location.href='/oauth/login'">登录</a>
+                    <a class="action-login-button button" v-show="!isLogin" onclick="location.href='/oauth/login'">登录</a>
+                </div>
+                <div class="action-logout">
+                    <a class="action-logout-button button" v-show="isLogin" onclick="location.href='/oauth/logout'">登出</a>
                 </div>
                 <div class="action-comment">
                     <a class="action-comment-button button" @click="showCommentModal">留言</a>
