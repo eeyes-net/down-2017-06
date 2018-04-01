@@ -53,8 +53,8 @@ e瞳网文件分享平台
 ### v4.0
 
 * 设计：[DZ鼎足三分](http://yihan.eeyes.net)
-* 前端：[Ganlv](https://github.com/ganlvtech)
-* 后端：[Ganlv](https://github.com/ganlvtech)
+* 前端：[Ganlv](https://github.com/ganlvtech) [Finn](https://github.com/finntenzor)
+* 后端：[Ganlv](https://github.com/ganlvtech) [f(x,z)=xzx](https://github.com/XuZhixuan)
 
 ### v3.0
 
