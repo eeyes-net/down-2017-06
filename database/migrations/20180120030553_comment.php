@@ -1,7 +1,6 @@
 <?php
 
 use think\migration\Migrator;
-use think\migration\db\Column;
 
 class Comment extends Migrator
 {
@@ -28,10 +27,10 @@ class Comment extends Migrator
      */
     public function change()
     {
-      $this->table('comment', ['engine' => 'MyISAM'])
-            ->addColumn('user_id','integer')
-            ->addColumn('content','text',['comment' => '评论内容'])
-            ->addColumn('is_admin','boolean',['comment' => '是否为管理员'])
+        $this->table('comment', ['engine' => 'MyISAM'])
+            ->addColumn('user_id', 'integer')
+            ->addColumn('content', 'text', ['comment' => '评论内容'])
+            ->addColumn('is_admin', 'boolean', ['comment' => '是否为管理员'])
             ->addColumn('create_time', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
             ->create();
     }

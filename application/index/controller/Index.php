@@ -2,21 +2,21 @@
 
 namespace app\index\controller;
 
+use app\common\model\Comment;
 use app\common\model\DownList;
 use app\common\model\Issue;
 use app\common\model\Log;
-use app\common\model\Comment;
 use app\common\model\User;
 use app\traits\controller\CheckPermission;
 use phpCAS;
 use think\Controller;
-use think\exception\HttpResponseException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 use think\exception\DbException;
+use think\exception\HttpResponseException;
 use think\Hook;
-use think\Session;
 use think\Response;
+use think\Session;
 
 /**
  * Class Index
@@ -28,13 +28,12 @@ class Index extends Controller
 
     protected $beforeActionList = [
         'checkPermission' => ['except' => ['index']],
-        'mustLogin'       => ['only' => ['getComment','saveComment']],
+        'mustLogin' => ['only' => ['getComment', 'saveComment']],
     ];
 
     public function mustLogin()
     {
-        if(!Session::has('user'))
-        {
+        if (!Session::has('user')) {
             $response = Response::create(['err_msg' => '请先登录'], 'json', 403);
             throw new HttpResponseException($response);
         }
@@ -200,12 +199,12 @@ class Index extends Controller
         $user = User::where('username', $username)->find();
 
         $data = [
-              'username' => $user->username,
-              'name' => $user->name,
+            'username' => $user->username,
+            'name' => $user->name,
+            'comment' => [],
         ];
         $trees = $user->comments;
-        foreach ($trees as $tree)
-        {
+        foreach ($trees as $tree) {
             $tmp = [
                 'content' => $tree->content,
                 'is_admin' => $tree->is_admin,

@@ -2,47 +2,43 @@
 
 namespace app\auth\controller;
 
+use app\common\model\User;
+use sxxuz\OAuth2\Client\Provider\Eeyes;
 use think\Controller;
 use think\Request;
 use think\Session;
-use think\Exception;
-use think\Log;
-use app\common\model\User;
-use sxxuz\OAuth2\Client\Provider\Eeyes;
-use sxxuz\OAuth2\Client\Provider\EeyesResourceOwner;
 
 class OAuthLogin extends Controller
 {
     public function login(Request $request)
     {
-		$scopes = [
-			'info-username.read',
-			'info-user_id.read',
-			'info-name.read',
-		];
-    	$eeyesClient = new Eeyes([
-    		'clientId'       => config('oauth.app_id'),
-		    'clientSecret'   => config('oauth.app_secret'),
-			'redirectUri'    => config('oauth.redirect_uri'),
-			'scope'	         => $scopes,
-		]);
+        $scopes = [
+            'info-username.read',
+            'info-name.read',
+        ];
+        $eeyesClient = new Eeyes([
+            'clientId' => config('oauth.app_id'),
+            'clientSecret' => config('oauth.app_secret'),
+            'redirectUri' => config('oauth.redirect_uri'),
+            'scope' => $scopes,
+        ]);
 
-		$user = $eeyesClient->getUser();
+        $user = $eeyesClient->getUser();
 
-		$u = User::where('username', $user['username'])->find();
+        $u = User::where('username', $user['username'])->find();
 
-		if (!$u) {
-			$u = new User();
-			$u->username = $user['username'];
-			$u->name = $user['name'];
-			$u->save();
-		}
+        if (!$u) {
+            $u = new User();
+            $u->username = $user['username'];
+            $u->name = $user['name'];
+            $u->save();
+        }
 
-		$user['id'] = $u->id;
+        $user['id'] = $u->id;
 
-		Session::set('user', $user);
+        Session::set('user', $user);
 
-		return redirect('/');
+        return redirect('/');
     }
 
     public function logout()
@@ -54,10 +50,10 @@ class OAuthLogin extends Controller
     public function getUser()
     {
         if (Session::has('user')) {
-			$code = 200;
+            $code = 200;
             $username = Session::get('user')['name'];
         } else {
-			$code = 403;
+            $code = 403;
             $username = '游客';
         }
 

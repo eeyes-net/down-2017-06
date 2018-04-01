@@ -11,9 +11,9 @@ use app\common\model\User;
 use app\traits\controller\CheckPermission;
 use think\Controller;
 use think\exception\HttpResponseException;
+use think\Hook;
 use think\Response;
 use think\Session;
-use think\Hook;
 
 class Index extends Controller
 {

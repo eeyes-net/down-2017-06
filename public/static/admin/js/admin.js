@@ -47,11 +47,11 @@ var vm = new Vue({
                 method: 'get',
                 url: '/admin/auth'
             })
-            .then(function (response) {
-                if (response.data) {
-                    data.isLogin = (true === response.data);
-                }
-            });
+                .then(function (response) {
+                    if (response.data) {
+                        data.isLogin = (true === response.data);
+                    }
+                });
         },
         login: function () {
             axios({
@@ -61,22 +61,22 @@ var vm = new Vue({
                     password: data.password
                 }
             })
-            .then(function (response) {
-                if (response.data) {
-                    data.isLogin = true;
-                }
-            });
+                .then(function (response) {
+                    if (response.data) {
+                        data.isLogin = true;
+                    }
+                });
         },
         logout: function () {
             axios({
                 method: 'post',
                 url: '/admin/auth/logout'
             })
-            .then(function (response) {
-                if (response.data) {
-                    data.isLogin = false;
-                }
-            });
+                .then(function (response) {
+                    if (response.data) {
+                        data.isLogin = false;
+                    }
+                });
         },
         refreshFilesData: function () {
             axios({
@@ -84,9 +84,9 @@ var vm = new Vue({
                 url: '/admin/files',
                 responseType: 'json'
             })
-            .then(function (response) {
-                data.downFiles = response.data;
-            });
+                .then(function (response) {
+                    data.downFiles = response.data;
+                });
         },
         refreshData: function () {
             this.refreshFilesData();
@@ -95,17 +95,17 @@ var vm = new Vue({
                 url: '/admin/list',
                 responseType: 'json'
             })
-            .then(function (response) {
-                data.downList = response.data;
-            });
+                .then(function (response) {
+                    data.downList = response.data;
+                });
             axios({
                 method: 'get',
                 url: '/admin/icons',
                 responseType: 'json'
             })
-            .then(function (response) {
-                data.icons = response.data;
-            });
+                .then(function (response) {
+                    data.icons = response.data;
+                });
             this.getIssues(1);
             this.getComments(1);
             axios({
@@ -113,17 +113,17 @@ var vm = new Vue({
                 url: '/admin/stats/date',
                 responseType: 'json'
             })
-            .then(function (response) {
-                data.statsByDate = response.data;
-            });
+                .then(function (response) {
+                    data.statsByDate = response.data;
+                });
             axios({
                 method: 'get',
                 url: '/admin/stats/file',
                 responseType: 'json'
             })
-            .then(function (response) {
-                data.statsByFile = response.data;
-            });
+                .then(function (response) {
+                    data.statsByFile = response.data;
+                });
         },
         refreshFiles: function () {
             axios({
@@ -131,11 +131,11 @@ var vm = new Vue({
                 url: '/admin/files/refresh',
                 responseType: 'json'
             })
-            .then(function (response) {
-                if (response.data) {
-                    vm.refreshFilesData();
-                }
-            });
+                .then(function (response) {
+                    if (response.data) {
+                        vm.refreshFilesData();
+                    }
+                });
         },
         enabledFiles: function () {
             var result = [];
@@ -172,8 +172,7 @@ var vm = new Vue({
                     mac_id: 0,
                     enabled: false
                 }
-            })
-            .then(function (response) {
+            }).then(function (response) {
                 data.downList.push(response.data);
             });
         },
@@ -196,8 +195,7 @@ var vm = new Vue({
                 axios({
                     method: 'delete',
                     url: '/admin/item/' + item.id
-                })
-                .then(function (response) {
+                }).then(function (response) {
                     if (response.data === true) {
                         var index = data.downList.indexOf(item);
                         data.downList.splice(index, 1);
@@ -243,8 +241,7 @@ var vm = new Vue({
                 method: 'post',
                 url: '/admin/icons/',
                 data: formData
-            })
-            .then(function (response) {
+            }).then(function (response) {
                 data.icons.push(response.data);
             });
         },
@@ -256,8 +253,7 @@ var vm = new Vue({
                     page: page
                 },
                 responseType: 'json'
-            })
-            .then(function (response) {
+            }).then(function (response) {
                 data.issueCurrentPage = page;
                 data.issueLastPage = response.data.last_page;
                 data.issues = response.data.data;
@@ -271,8 +267,7 @@ var vm = new Vue({
                     page: page
                 },
                 responseType: 'json'
-            })
-            .then(function (response) {
+            }).then(function (response) {
                 data.commentCurrentPage = page;
                 data.commentLastPage = response.data.last_page;
                 data.comments = response.data.data;
@@ -291,19 +286,19 @@ var vm = new Vue({
                     content: content
                 },
                 responseType: 'json'
-            }).then(function(response) {
+            }).then(function (response) {
                 alert(response.data.msg);
                 vm.getComments(data.commentCurrentPage);
             });
         },
         deleteComment: function (id, alarm = true) {
-            if (alarm && !confirm("删除是不可恢复的，你确认要删除吗？")) {
+            if (alarm && !confirm('删除是不可恢复的，你确认要删除吗？')) {
                 return;
             }
             axios({
                 method: 'delete',
-                url: '/admin/comment/' + id,
-            }).then(function(response) {
+                url: '/admin/comment/' + id
+            }).then(function (response) {
                 if (response.data) {
                     alert('成功');
                 } else {
@@ -313,13 +308,13 @@ var vm = new Vue({
             });
         },
         deleteComments: function (group, alarm = true) {
-            if (alarm && !confirm("删除是不可恢复的，你确认要删除所有对话吗？")) {
+            if (alarm && !confirm('删除是不可恢复的，你确认要删除所有对话吗？')) {
                 return;
             }
             axios({
                 method: 'delete',
-                url: '/admin/comments/' + group.id,
-            }).then(function(response) {
+                url: '/admin/comments/' + group.id
+            }).then(function (response) {
                 if (response.data) {
                     alert('成功');
                 } else {
@@ -393,27 +388,27 @@ var vm = new Vue({
         selectIssuePage: function (page) {
             if (page === '+1') {
                 if (this.issueCurrentPage + 1 <= this.issueLastPage) {
-                    this.getIssues(this.issueCurrentPage + 1)
+                    this.getIssues(this.issueCurrentPage + 1);
                 }
             } else if (page === '-1') {
                 if (this.issueCurrentPage - 1 >= 1) {
-                    this.getIssues(this.issueCurrentPage - 1)
+                    this.getIssues(this.issueCurrentPage - 1);
                 }
             } else {
-                this.getIssues(parseInt(page))
+                this.getIssues(parseInt(page));
             }
         },
         selectCommentPage: function (page) {
             if (page === '+1') {
                 if (this.commentCurrentPage + 1 <= this.commentLastPage) {
-                    this.getComments(this.commentCurrentPage + 1)
+                    this.getComments(this.commentCurrentPage + 1);
                 }
             } else if (page === '-1') {
                 if (this.commentCurrentPage - 1 >= 1) {
-                    this.getComments(this.commentCurrentPage - 1)
+                    this.getComments(this.commentCurrentPage - 1);
                 }
             } else {
-                this.getComments(parseInt(page))
+                this.getComments(parseInt(page));
             }
         }
     },

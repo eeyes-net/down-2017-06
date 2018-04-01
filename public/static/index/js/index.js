@@ -10,7 +10,7 @@ var data = {
     content: '',
     name: '',
     contact: '',
-    isCommentModalShow: false,
+    isCommentModalShow: false
 };
 var vm = new Vue({
     el: '#root',
@@ -37,9 +37,8 @@ var vm = new Vue({
         getUserInfo: function () {
             axios({
                 method: 'get',
-                url: '/oauth/user',
-            })
-            .then(function (response) {
+                url: '/oauth/user'
+            }).then(function (response) {
                 data.isLogin = response.data.code === 200;
                 data.greeting = '你好，' + response.data.username;
             });
@@ -49,8 +48,7 @@ var vm = new Vue({
                 method: 'get',
                 url: '/list/',
                 headers: {'x-Requested-With': 'XMLHttpRequest'}
-            })
-            .then(function (response) {
+            }).then(function (response) {
                 if (response.data.code === 200) {
                     data.downList = response.data.data;
                 } else {
@@ -62,9 +60,8 @@ var vm = new Vue({
         getComments: function () {
             axios({
                 method: 'get',
-                url: '/comment',
-            })
-            .then(function (response) {
+                url: '/comment'
+            }).then(function (response) {
                 if (response.data.code === 200) {
                     data.comments = response.data.data.comment;
                 } else {
@@ -86,8 +83,7 @@ var vm = new Vue({
                 data: {
                     content: data.reply
                 }
-            })
-            .then(function (response) {
+            }).then(function (response) {
                 if (response.data.code === 200) {
                     alert('提交评论成功！');
                     vm.getComments();
@@ -97,7 +93,7 @@ var vm = new Vue({
                 }
             });
         },
-        showCommentModal: function() {
+        showCommentModal: function () {
             data.isCommentModalShow = true;
         },
         hideCommentModal: function () {

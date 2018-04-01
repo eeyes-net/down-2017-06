@@ -1,7 +1,6 @@
 <?php
 
 use think\migration\Migrator;
-use think\migration\db\Column;
 
 class UserAddColumnLastComment extends Migrator
 {
@@ -29,7 +28,7 @@ class UserAddColumnLastComment extends Migrator
     public function change()
     {
         $this->table('user')
-            ->addColumn('last_comment_time','timestamp',['comment' => '该用户最后一次发表评论的时间'])
+            ->addColumn('last_comment_time', 'timestamp', ['comment' => '该用户最后一次发表评论的时间'])
             ->save();
     }
 }

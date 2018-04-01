@@ -1,7 +1,6 @@
 <?php
 
 use think\migration\Migrator;
-use think\migration\db\Column;
 
 class User extends Migrator
 {
@@ -28,9 +27,9 @@ class User extends Migrator
      */
     public function change()
     {
-        $this->table('user',['engine' => 'MyISAM'])
-            ->addColumn('username','string',['comment' => 'netID'])
-            ->addColumn('name','text',['comment' => '姓名'])
+        $this->table('user', ['engine' => 'MyISAM'])
+            ->addColumn('username', 'string', ['comment' => 'netID'])
+            ->addColumn('name', 'text', ['comment' => '姓名'])
             ->create();
     }
 }
