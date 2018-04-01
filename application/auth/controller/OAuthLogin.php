@@ -44,7 +44,7 @@ class OAuthLogin extends Controller
     public function logout()
     {
         Session::delete('user');
-        return redirect('https://cas.xjtu.edu.cn/logout');
+        return redirect('https://account.eeyes.net/logout?url=' . urlencode(url('/', '', false, true)));
     }
 
     public function getUser()
